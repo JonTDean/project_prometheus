@@ -79,3 +79,89 @@ function initializePheromoneMatrix(numberOfLocations, initialPheromoneValue):
     return pheromoneMatrix
 
 ```
+
+```python
+function antRouting(startLocation, endLocation, adjacencyMatrix, pheromoneMatrix, heuristicInfo, alpha, beta):
+    """
+    1. Initialize an empty path list to store the locations visited by the ant
+    2. Set the current location to the start location
+    3. While the current location is not the end location:
+        a. Get the available next locations from the current location using the adjacency matrix
+        b. Calculate the probability of moving to each available next location using the pheromone and heuristic information
+        c. Select the next location based on the calculated probabilities
+        d. Add the selected location to the path list
+        e. Update the current location to the selected location
+    4. Return the path list representing the route taken by the ant
+    
+    RUNTIME COMPLEXITY:
+        - BIG-O: O(n^2)
+        - Reasoning:
+            The while loop runs until the end location is reached, which in the worst case could be all locations.
+            Inside the loop, calculating probabilities and selecting the next location takes O(n) time.
+            Therefore, the overall time complexity is O(n^2), where n is the number of locations.
+    SPACE COMPLEXITY:
+        - BIG-O: O(n)
+        - Reasoning:
+            The path list stores the locations visited by the ant, which in the worst case could be all locations.
+            Therefore, the space complexity is O(n), where n is the number of locations.
+    """
+    path = []
+    currentLocation = startLocation
+    
+    while currentLocation != endLocation:
+		"""
+		1. Get the row corresponding to the current location from the adjacency matrix
+		2. Find the indices of the cells in the row that have a value other than INFINITY
+		3. Return the list of available next locations
+		
+		RUNTIME COMPLEXITY:
+			- BIG-O: O(n)
+			- Reasoning: The function iterates over the row of the adjacency matrix, which has n elements.
+		SPACE COMPLEXITY:
+			- BIG-O: O(n)
+			- Reasoning: The function returns a list of available next locations, which in the worst case could be all locations.
+		"""
+        availableLocations = getAvailableLocations(currentLocation, adjacencyMatrix)
+		"""
+		1. Initialize an empty list to store the probabilities
+		2. For each available next location:
+			a. Calculate the pheromone factor using the pheromone matrix and the alpha parameter
+			b. Calculate the heuristic factor using the heuristic information and the beta parameter
+			c. Calculate the probability by multiplying the pheromone factor and heuristic factor
+			d. Add the calculated probability to the probabilities list
+		3. Normalize the probabilities list to ensure they sum up to 1
+		4. Return the normalized probabilities list
+		
+		RUNTIME COMPLEXITY:
+			- BIG-O: O(n)
+			- Reasoning: The function iterates over the available next locations, which in the worst case could be all locations.
+		SPACE COMPLEXITY:
+			- BIG-O: O(n)
+			- Reasoning: The function returns a list of probabilities, which has the same length as the available next locations.
+		"""
+        probabilities = calculateProbabilities(
+			currentLocation, 
+			availableLocations, 
+			pheromoneMatrix, 
+			heuristicInfo, 
+			alpha, 
+			beta
+		)
+		"""
+		1. Generate a random number between 0 and 1
+		2. Iterate over the probabilities list and accumulate the probabilities
+		3. If the accumulated probability exceeds the random number, return the corresponding location
+		
+		RUNTIME COMPLEXITY:
+			- BIG-O: O(n)
+			- Reasoning: The function iterates over the probabilities list, which has a length proportional to the number of available locations.
+		SPACE COMPLEXITY:
+			- BIG-O: O(1)
+			- Reasoning: The function uses a constant amount of extra space for the random number and accumulated probability.
+		"""
+        nextLocation = selectNextLocation(probabilities)
+        path.append(nextLocation)
+        currentLocation = nextLocation
+    
+    return path
+```
