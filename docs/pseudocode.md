@@ -3,10 +3,12 @@
 function initializeHeuristicInfo(locations, endLocation):
     """
     1. Create an empty hash table to store the heuristic information
-    2. For each location in the locations list:
+    
+	2. For each location in the locations list:
         a. Calculate the heuristic value for the location (distance from the location to the end location)
         b. Add an entry to the hash table with the location as the key and the heuristic value as the value
-    3. Return the initialized heuristic information hash table
+    
+	3. Return the initialized heuristic information hash table (Converted from the WGUPS Distance Table)
     
     Example:
     - locations: ["Western Governors University", "International Peace Gardens", "Sugar House Park", ...]
@@ -20,6 +22,7 @@ function initializeHeuristicInfo(locations, endLocation):
     RUNTIME COMPLEXITY:
         - BIG-O: O(n)
         - Reasoning: The function iterates over the locations list once to calculate and store the heuristic values.
+
     SPACE COMPLEXITY:
         - BIG-O: O(n)
         - Reasoning: The function creates a hash table with an entry for each location, taking space proportional to the number of locations.
@@ -27,31 +30,27 @@ function initializeHeuristicInfo(locations, endLocation):
     heuristicInfo = createHashTable()
     
     for each location in locations:
+		"""
+		1. Look up the distance between location1 and location2 in the distance table
+		
+		2. Return the distance value
+		Example:
+		- location1: "Western Governors University"
+		- location2: "International Peace Gardens"
+		- Distance: 7.2 (retrieved from the distance table)
+		
+		RUNTIME COMPLEXITY:
+			- BIG-O: O(1)
+			- Reasoning: Looking up the distance between two locations in the distance table takes constant time.
+
+		SPACE COMPLEXITY:
+			- BIG-O: O(1)
+			- Reasoning: The function returns a single distance value, taking constant extra space.
+		"""
         heuristicValue = calculateDistance(location, endLocation)
         addToHashTable(heuristicInfo, location, heuristicValue)
     
     return heuristicInfo
-
-function calculateDistance(location1, location2):
-    """
-    1. Look up the distance between location1 and location2 in the distance table
-    2. Return the distance value
-    
-    Example:
-    - location1: "Western Governors University"
-    - location2: "International Peace Gardens"
-    - Distance: 7.2 (retrieved from the distance table)
-    
-    RUNTIME COMPLEXITY:
-        - BIG-O: O(1)
-        - Reasoning: Looking up the distance between two locations in the distance table takes constant time.
-    SPACE COMPLEXITY:
-        - BIG-O: O(1)
-        - Reasoning: The function returns a single distance value, taking constant extra space.
-    """
-    # Implementation details omitted for brevity
-    # Assume the distance table is stored in a suitable data structure for efficient lookup
-    return distanceTable[location1][location2]
 ```
 
 ```python
@@ -139,14 +138,17 @@ function initializePheromoneMatrix(numberOfLocations, initialPheromoneValue):
 function antRouting(startLocation, endLocation, adjacencyMatrix, pheromoneMatrix, heuristicInfo, alpha, beta):
     """
     1. Initialize an empty path list to store the locations visited by the ant
-    2. Set the current location to the start location
-    3. While the current location is not the end location:
+    
+	2. Set the current location to the start location
+    
+	3. While the current location is not the end location:
         a. Get the available next locations from the current location using the adjacency matrix
         b. Calculate the probability of moving to each available next location using the pheromone and heuristic information
         c. Select the next location based on the calculated probabilities
         d. Add the selected location to the path list
         e. Update the current location to the selected location
-    4. Return the path list representing the route taken by the ant
+    
+	4. Return the path list representing the route taken by the ant
     
     RUNTIME COMPLEXITY:
         - BIG-O: O(n^2)
@@ -154,6 +156,7 @@ function antRouting(startLocation, endLocation, adjacencyMatrix, pheromoneMatrix
             The while loop runs until the end location is reached, which in the worst case could be all locations.
             Inside the loop, calculating probabilities and selecting the next location takes O(n) time.
             Therefore, the overall time complexity is O(n^2), where n is the number of locations.
+
     SPACE COMPLEXITY:
         - BIG-O: O(n)
         - Reasoning:
@@ -166,7 +169,9 @@ function antRouting(startLocation, endLocation, adjacencyMatrix, pheromoneMatrix
     while currentLocation != endLocation:
 		"""
 		1. Get the row corresponding to the current location from the adjacency matrix
+		
 		2. Find the indices of the cells in the row that have a value other than INFINITY
+		
 		3. Return the list of available next locations
 		
 		RUNTIME COMPLEXITY:
@@ -179,12 +184,15 @@ function antRouting(startLocation, endLocation, adjacencyMatrix, pheromoneMatrix
         availableLocations = getAvailableLocations(currentLocation, adjacencyMatrix)
 		"""
 		1. Initialize an empty list to store the probabilities
+		
 		2. For each available next location:
 			a. Calculate the pheromone factor using the pheromone matrix and the alpha parameter
 			b. Calculate the heuristic factor using the heuristic information and the beta parameter
 			c. Calculate the probability by multiplying the pheromone factor and heuristic factor
 			d. Add the calculated probability to the probabilities list
+
 		3. Normalize the probabilities list to ensure they sum up to 1
+
 		4. Return the normalized probabilities list
 		
 		RUNTIME COMPLEXITY:
@@ -204,7 +212,9 @@ function antRouting(startLocation, endLocation, adjacencyMatrix, pheromoneMatrix
 		)
 		"""
 		1. Generate a random number between 0 and 1
+		
 		2. Iterate over the probabilities list and accumulate the probabilities
+		
 		3. If the accumulated probability exceeds the random number, return the corresponding location
 		
 		RUNTIME COMPLEXITY:
@@ -226,7 +236,8 @@ function antRouting(startLocation, endLocation, adjacencyMatrix, pheromoneMatrix
 function initializeAntDecisionQueue():
     """
     1. Create an empty Fibonacci heap to store the ant decisions
-    2. Return the initialized ant decision queue
+    
+	2. Return the initialized ant decision queue
     
     RUNTIME COMPLEXITY:
         - BIG-O: O(1)
@@ -240,3 +251,215 @@ function initializeAntDecisionQueue():
     return antDecisionQueue
 
 ```
+
+```python
+function runACO(startLocation, endLocation, locations, distanceTable, numAnts, numIterations, alpha, beta, evaporationRate):
+    """
+    1. Initialize the ACO graph using the locations and distance table
+
+    2. Initialize the pheromone matrix with initial pheromone values
+
+    3. Initialize the heuristic information using the locations and end location
+
+    4. Create an empty list to store the best route found
+
+    5. For each iteration:
+        a. Create an empty list to store the routes for the current iteration
+        b. For each ant:
+            i. Perform ant routing to find a route from the start location to the end location
+            ii. Add the found route to the current iteration's routes list
+        c. Update the pheromone matrix based on the routes found in the current iteration
+        d. Evaporate the pheromone values in the pheromone matrix
+        e. Find the best route among the current iteration's routes
+        f. If the current best route is better than the overall best route, update the overall best route
+
+    6. Visualize the best route found
+
+    7. Return the best route
+    
+    RUNTIME COMPLEXITY:
+        - BIG-O: O(numIterations * numAnts * n^2)
+        - Reasoning:
+            - The outer loop runs for numIterations
+            - For each iteration, there is a loop that runs for numAnts
+            - Inside the ant loop, the ant routing function has a complexity of O(n^2)
+            - The pheromone update and evaporation operations have a complexity of O(n^2)
+            - Therefore, the overall complexity is O(numIterations * numAnts * n^2)
+
+    SPACE COMPLEXITY:
+        - BIG-O: O(n^2)
+        - Reasoning:
+            - The ACO graph and pheromone matrix require O(n^2) space
+            - The heuristic information requires O(n) space
+            - The space required for storing routes is O(numAnts * n) in each iteration
+            - Therefore, the overall space complexity is O(n^2)
+    """
+    graph = initializeACOGraph(locations)
+    pheromoneMatrix = initializePheromoneMatrix(len(locations), initialPheromoneValue)
+    heuristicInfo = initializeHeuristicInfo(locations, endLocation)
+    bestRoute = []
+
+    for i in range(numIterations):
+        iterationRoutes = []
+        
+        for j in range(numAnts):
+            route = antRouting(startLocation, endLocation, graph, pheromoneMatrix, heuristicInfo, alpha, beta)
+            iterationRoutes.append(route)
+		"""
+		1. Retrieve the pheromone updates from the pheromoneUpdateQueue
+
+		2. Apply the pheromone updates to the corresponding cells in the pheromoneMatrix
+		
+		RUNTIME COMPLEXITY:
+			- BIG-O: O(k), where k is the number of pheromone updates in the queue
+			- Reasoning:
+				The function iterates over the pheromone updates in the queue and applies them to the matrix.
+				The time complexity depends on the number of updates in the queue.
+		SPACE COMPLEXITY:
+			- BIG-O: O(1)
+			- Reasoning: The function uses the existing pheromoneMatrix and does not require additional space.
+		"""
+        updatePheromoneMatrix(pheromoneMatrix, iterationRoutes)
+		"""
+		1. Iterate over each cell in the pheromoneMatrix
+
+		2. Reduce the pheromone value of each cell by the evaporationRate
+		
+		RUNTIME COMPLEXITY:
+			- BIG-O: O(n^2)
+			- Reasoning:
+				The function uses nested loops to iterate over each cell in the matrix,
+				resulting in a time complexity of O(n^2), where n is the number of locations.
+
+		SPACE COMPLEXITY:
+			- BIG-O: O(1)
+			- Reasoning: The function modifies the existing pheromoneMatrix in-place and does not require additional space.
+		"""
+        evaporatePheromone(pheromoneMatrix, evaporationRate)
+        
+        currentBestRoute = findBestRoute(iterationRoutes)
+        if isBetterRoute(currentBestRoute, bestRoute):
+            bestRoute    
+	"""
+    1. Create a visualization of the route using the visualization lib
+
+    2. Display the visualization
+    
+   RUNTIME COMPLEXITY:
+        - BIG-O: O(n)
+        - Reasoning: The visualization process typically is simply iterating over the locations in the route
+
+    SPACE COMPLEXITY:
+        - BIG-O: O(n)
+        - Reasoning: The space required for the visualization depends on the number of locations in the route
+    """
+    visualizeRoute(bestRoute)
+    return bestRoute
+
+```
+
+```python
+class Package:
+    """
+    Represents a package in the delivery system.
+    
+    Attributes:
+        packageID (str): The unique identifier of the package.
+        address (str): The delivery address of the package.
+        city (str): The delivery city of the package.
+        state (str): The delivery state of the package.
+        zip (str): The delivery zip code of the package.
+        deliveryDeadline (datetime): The deadline for delivering the package.
+        weightKilo (float): The weight of the package in kilograms.
+        specialNotes (str): Any special notes or instructions for the package.
+        status (str): The current status of the package (e.g., "at the hub", "en route", "delivered").
+        deliveryTime (datetime): The actual delivery time of the package (if delivered).
+    """
+    
+    def __init__(self, packageID, address, city, state, zip, deliveryDeadline, weightKilo, specialNotes):
+        """
+        Initializes a new instance of the Package class.
+        
+        Parameters:
+            packageID (str): The unique identifier of the package.
+            address (str): The delivery address of the package.
+            city (str): The delivery city of the package.
+            state (str): The delivery state of the package.
+            zip (str): The delivery zip code of the package.
+            deliveryDeadline (datetime): The deadline for delivering the package.
+            weightKilo (float): The weight of the package in kilograms.
+            specialNotes (str): Any special notes or instructions for the package.
+        """
+        self.packageID = packageID
+        self.address = address
+        self.city = city
+        self.state = state
+        self.zip = zip
+        self.deliveryDeadline = deliveryDeadline
+        self.weightKilo = weightKilo
+        self.specialNotes = specialNotes
+        self.status = "at the hub"
+        self.deliveryTime = None
+    
+    def updateStatus(self, newStatus, deliveryTime=None):
+        """
+        Updates the status of the package.
+        
+        Parameters:
+            newStatus (str): The new status of the package.
+            deliveryTime (datetime): The actual delivery time of the package (if applicable).
+        """
+        self.status = newStatus
+        self.deliveryTime = deliveryTime
+    
+    def getDeliveryDetails(self):
+        """
+        Retrieves the delivery details of the package.
+        
+        Returns:
+            tuple: A tuple containing the package's address, city, state, zip, delivery deadline, weight, and special notes.
+        """
+        return (self.address, self.city, self.state, self.zip, self.deliveryDeadline, self.weightKilo, self.specialNotes)
+
+class DeliveryManagementSystem:
+    """
+    Represents the delivery management system.
+    
+    Attributes:
+        packages (dict): A dictionary storing the packages, with package IDs as keys and Package objects as values.
+    """
+    
+    def __init__(self):
+        """
+        Initializes a new instance of the DeliveryManagementSystem class.
+        """
+        self.packages = {}
+    
+    def addPackage(self, package):
+        """
+        Adds a package to the delivery management system.
+        
+        Parameters:
+            package (Package): The package to be added.
+        """
+        self.packages[package.packageID] = package
+    
+    def getPackage(self, packageID):
+        """
+        Retrieves a package from the delivery management system based on the package ID.
+        
+        Parameters:
+            packageID (str): The ID of the package to retrieve.
+        
+        Returns:
+            Package: The package object corresponding to the given package ID, or None if not found.
+        """
+        return self.packages.get(packageID)
+    
+    def updatePackageStatus(self, packageID, newStatus, deliveryTime=None):
+        """
+        Updates the status of a package in the delivery management system.
+        
+        Parameters:
+            packageID (str): The
+	```
