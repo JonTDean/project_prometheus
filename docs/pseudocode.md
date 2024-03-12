@@ -1,5 +1,60 @@
 # WGUPS ACO Pseudocode
 ```python
+function initializeHeuristicInfo(locations, endLocation):
+    """
+    1. Create an empty hash table to store the heuristic information
+    2. For each location in the locations list:
+        a. Calculate the heuristic value for the location (distance from the location to the end location)
+        b. Add an entry to the hash table with the location as the key and the heuristic value as the value
+    3. Return the initialized heuristic information hash table
+    
+    Example:
+    - locations: ["Western Governors University", "International Peace Gardens", "Sugar House Park", ...]
+    - endLocation: "Western Governors University"
+    - heuristicInfo (hash table):
+        - key: "Western Governors University", value: 0.0
+        - key: "International Peace Gardens", value: 7.2
+        - key: "Sugar House Park", value: 3.8
+        - ...
+    
+    RUNTIME COMPLEXITY:
+        - BIG-O: O(n)
+        - Reasoning: The function iterates over the locations list once to calculate and store the heuristic values.
+    SPACE COMPLEXITY:
+        - BIG-O: O(n)
+        - Reasoning: The function creates a hash table with an entry for each location, taking space proportional to the number of locations.
+    """
+    heuristicInfo = createHashTable()
+    
+    for each location in locations:
+        heuristicValue = calculateDistance(location, endLocation)
+        addToHashTable(heuristicInfo, location, heuristicValue)
+    
+    return heuristicInfo
+
+function calculateDistance(location1, location2):
+    """
+    1. Look up the distance between location1 and location2 in the distance table
+    2. Return the distance value
+    
+    Example:
+    - location1: "Western Governors University"
+    - location2: "International Peace Gardens"
+    - Distance: 7.2 (retrieved from the distance table)
+    
+    RUNTIME COMPLEXITY:
+        - BIG-O: O(1)
+        - Reasoning: Looking up the distance between two locations in the distance table takes constant time.
+    SPACE COMPLEXITY:
+        - BIG-O: O(1)
+        - Reasoning: The function returns a single distance value, taking constant extra space.
+    """
+    # Implementation details omitted for brevity
+    # Assume the distance table is stored in a suitable data structure for efficient lookup
+    return distanceTable[location1][location2]
+```
+
+```python
 function initializeACOGraph(numberOfLocations):
     """
 	1. Create an empty adjacency matrix for graph representation
@@ -164,4 +219,55 @@ function antRouting(startLocation, endLocation, adjacencyMatrix, pheromoneMatrix
         currentLocation = nextLocation
     
     return path
+```
+
+```python
+# Pheromone Update Queue
+function initializePheromoneUpdateQueue():
+    """
+    1. Create an empty min-heap to store the pheromone updates
+    2. Return the initialized pheromone update queue
+    
+    RUNTIME COMPLEXITY:
+        - BIG-O: O(1)
+        - Reasoning: Initializing an empty min-heap takes constant time.
+    SPACE COMPLEXITY:
+        - BIG-O: O(1)
+        - Reasoning: The function returns an empty min-heap, which initially takes constant space.
+    """
+    pheromoneUpdateQueue = createMinHeap()
+    return pheromoneUpdateQueue
+
+function addPheromoneUpdate(pheromoneUpdateQueue, location_i, location_j, pheromoneValue):
+    """
+    1. Create a pheromone update object with the given location_i, location_j, and pheromoneValue
+    2. Insert the pheromone update object into the min-heap
+    
+    RUNTIME COMPLEXITY:
+        - BIG-O: O(log k)
+        - Reasoning: Inserting an element into a min-heap takes logarithmic time, where k is the number of elements in the heap.
+    SPACE COMPLEXITY:
+        - BIG-O: O(1)
+        - Reasoning: The function adds a single pheromone update object to the min-heap, taking constant extra space.
+    """
+    pheromoneUpdate = createPheromoneUpdate(location_i, location_j, pheromoneValue)
+    insertIntoMinHeap(pheromoneUpdateQueue, pheromoneUpdate)
+
+function getNextPheromoneUpdate(pheromoneUpdateQueue):
+    """
+    1. If the pheromone update queue is empty, return None
+    2. Otherwise, remove and return the minimum pheromone update from the min-heap
+    
+    RUNTIME COMPLEXITY:
+        - BIG-O: O(log k)
+        - Reasoning: Removing the minimum element from a min-heap takes logarithmic time, where k is the number of elements in the heap.
+    SPACE COMPLEXITY:
+        - BIG-O: O(1)
+        - Reasoning: The function returns a single pheromone update object, taking constant extra space.
+    """
+    if isEmpty(pheromoneUpdateQueue):
+        return None
+    else:
+        return removeMinFromMinHeap(pheromoneUpdateQueue)
+
 ```
