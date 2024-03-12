@@ -222,52 +222,21 @@ function antRouting(startLocation, endLocation, adjacencyMatrix, pheromoneMatrix
 ```
 
 ```python
-# Pheromone Update Queue
-function initializePheromoneUpdateQueue():
+# Ant Decision Queue
+function initializeAntDecisionQueue():
     """
-    1. Create an empty min-heap to store the pheromone updates
-    2. Return the initialized pheromone update queue
+    1. Create an empty Fibonacci heap to store the ant decisions
+    2. Return the initialized ant decision queue
     
     RUNTIME COMPLEXITY:
         - BIG-O: O(1)
-        - Reasoning: Initializing an empty min-heap takes constant time.
+        - Reasoning: Initializing an empty Fibonacci heap takes constant time.
     SPACE COMPLEXITY:
         - BIG-O: O(1)
-        - Reasoning: The function returns an empty min-heap, which initially takes constant space.
+        - Reasoning: The function returns an empty Fibonacci heap, which initially takes constant space.
     """
-    pheromoneUpdateQueue = createMinHeap()
-    return pheromoneUpdateQueue
-
-function addPheromoneUpdate(pheromoneUpdateQueue, location_i, location_j, pheromoneValue):
-    """
-    1. Create a pheromone update object with the given location_i, location_j, and pheromoneValue
-    2. Insert the pheromone update object into the min-heap
-    
-    RUNTIME COMPLEXITY:
-        - BIG-O: O(log k)
-        - Reasoning: Inserting an element into a min-heap takes logarithmic time, where k is the number of elements in the heap.
-    SPACE COMPLEXITY:
-        - BIG-O: O(1)
-        - Reasoning: The function adds a single pheromone update object to the min-heap, taking constant extra space.
-    """
-    pheromoneUpdate = createPheromoneUpdate(location_i, location_j, pheromoneValue)
-    insertIntoMinHeap(pheromoneUpdateQueue, pheromoneUpdate)
-
-function getNextPheromoneUpdate(pheromoneUpdateQueue):
-    """
-    1. If the pheromone update queue is empty, return None
-    2. Otherwise, remove and return the minimum pheromone update from the min-heap
-    
-    RUNTIME COMPLEXITY:
-        - BIG-O: O(log k)
-        - Reasoning: Removing the minimum element from a min-heap takes logarithmic time, where k is the number of elements in the heap.
-    SPACE COMPLEXITY:
-        - BIG-O: O(1)
-        - Reasoning: The function returns a single pheromone update object, taking constant extra space.
-    """
-    if isEmpty(pheromoneUpdateQueue):
-        return None
-    else:
-        return removeMinFromMinHeap(pheromoneUpdateQueue)
+	
+    antDecisionQueue = createFibonacciHeap()
+    return antDecisionQueue
 
 ```
