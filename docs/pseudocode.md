@@ -364,16 +364,16 @@ class Package:
     Represents a package in the delivery system.
     
     Attributes:
-        packageID (str): The unique identifier of the package.
-        address (str): The delivery address of the package.
-        city (str): The delivery city of the package.
-        state (str): The delivery state of the package.
-        zip (str): The delivery zip code of the package.
-        deliveryDeadline (datetime): The deadline for delivering the package.
-        weightKilo (float): The weight of the package in kilograms.
-        specialNotes (str): Any special notes or instructions for the package.
-        status (str): The current status of the package (e.g., "at the hub", "en route", "delivered").
-        deliveryTime (datetime): The actual delivery time of the package (if delivered).
+        packageID: The unique identifier of the package.
+        address: The delivery address of the package.
+        city: The delivery city of the package.
+        state: The delivery state of the package.
+        zip: The delivery zip code of the package.
+        deliveryDeadline: The deadline for delivering the package.
+        weightKilo: The weight of the package in kilograms.
+        specialNotes: Any special notes or instructions for the package.
+        status: The current status of the package (e.g., "at the hub", "en route", "delivered").
+        deliveryTime: The actual delivery time of the package (if delivered).
     """
     
     def __init__(self, packageID, address, city, state, zip, deliveryDeadline, weightKilo, specialNotes):
@@ -381,14 +381,14 @@ class Package:
         Initializes a new instance of the Package class.
         
         Parameters:
-            packageID (str): The unique identifier of the package.
-            address (str): The delivery address of the package.
-            city (str): The delivery city of the package.
-            state (str): The delivery state of the package.
-            zip (str): The delivery zip code of the package.
-            deliveryDeadline (datetime): The deadline for delivering the package.
-            weightKilo (float): The weight of the package in kilograms.
-            specialNotes (str): Any special notes or instructions for the package.
+            packageID: The unique identifier of the package.
+            address: The delivery address of the package.
+            city: The delivery city of the package.
+            state: The delivery state of the package.
+            zip: The delivery zip code of the package.
+            deliveryDeadline: The deadline for delivering the package.
+            weightKilo: The weight of the package in kilograms.
+            specialNotes: Any special notes or instructions for the package.
         """
         self.packageID = packageID
         self.address = address
@@ -406,8 +406,8 @@ class Package:
         Updates the status of the package.
         
         Parameters:
-            newStatus (str): The new status of the package.
-            deliveryTime (datetime): The actual delivery time of the package (if applicable).
+            newStatus: The new status of the package.
+            deliveryTime: The actual delivery time of the package (if applicable).
         """
         self.status = newStatus
         self.deliveryTime = deliveryTime
@@ -426,7 +426,7 @@ class DeliveryManagementSystem:
     Represents the delivery management system.
     
     Attributes:
-        packages (dict): A dictionary storing the packages, with package IDs as keys and Package objects as values.
+        packages: A dictionary storing the packages, with package IDs as keys and Package objects as values.
     """
     
     def __init__(self):
@@ -449,7 +449,7 @@ class DeliveryManagementSystem:
         Retrieves a package from the delivery management system based on the package ID.
         
         Parameters:
-            packageID (str): The ID of the package to retrieve.
+            packageID: The ID of the package to retrieve.
         
         Returns:
             Package: The package object corresponding to the given package ID, or None if not found.
@@ -461,5 +461,5 @@ class DeliveryManagementSystem:
         Updates the status of a package in the delivery management system.
         
         Parameters:
-            packageID (str): The
+            packageID: The
 	```
