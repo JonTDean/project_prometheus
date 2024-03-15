@@ -5,7 +5,7 @@ def show_main_menu() -> str:
     Returns:
         The user's choice as a lowercase string.
     """
-    print("Welcome to the WGUPS Package System - Main Menu\n")
+    print("Welcome to the WGUPS Admin Console - Main Menu\n")
     print("p. Populate delivery data and package data")
     print("e. Exit")
     return input("Enter choice: ").lower()

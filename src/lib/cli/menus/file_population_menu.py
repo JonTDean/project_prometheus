@@ -20,7 +20,7 @@ def show_file_population_menu(default_distance_table_path: Path, default_package
     """
     while True:
         clear_screen()
-        print("WGUPS Package System - File Population Menu\n")
+        print("WGUPS Admin Console - File Population Menu\n")
         print("1. Use the current csv files (Default)")
         print("2. Please provide the fully qualified file paths of the csv files to be converted")
         print("Enter 'back' (b) to return to the main menu or 'exit' (e) to quit.")
