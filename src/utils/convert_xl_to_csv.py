@@ -3,7 +3,6 @@ import json
 def correct_distance_table_json(input_json_path, output_json_path):
     """
     Corrects the distance table JSON by filling in the route names based on the sequence of locations.
-    
 
     Parameters:
     - input_json_path: Path to the input JSON file with incomplete route names.
