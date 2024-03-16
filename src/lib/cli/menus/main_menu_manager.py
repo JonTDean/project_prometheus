@@ -1,6 +1,4 @@
 # Local
-from lib.cli.menus.analytics.analytics_manager import AnalyticsManager
-from lib.cli.menus.file_population_menu.file_population_menu import show_file_population_menu
 from lib.cli.utils.meta import clear_screen, exit_process
 
 class MainMenuManager:
@@ -57,10 +55,10 @@ class MainMenuManager:
         """
         if choice == "v":
             # Delegate to show analytics menu
-            AnalyticsManager.show_analytics_menu(self.cli_manager, self)
+            self.cli_manager.analytics_manager.show_analytics_menu(self.cli_manager, self)
         elif choice == "p":
             # Delegate to process file population using the provided paths
-            show_file_population_menu(self.cli_manager)
+            self.cli_manager.file_population_manager.show_file_population_menu()
         elif choice == "e":
             # Trigger application exit
             exit_process()

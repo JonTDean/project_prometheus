@@ -6,13 +6,15 @@ from datetime import datetime
 from lib.cli.menus.analytics.analytics_manager import AnalyticsManager
 from lib.cli.menus.analytics.sub_menus.PackageManager import PackageManager
 from lib.cli.menus.analytics.sub_menus.TruckManager import TruckManager
-from lib.cli.menus.main_menu.main_menu_manager import MainMenuManager
+from lib.cli.menus.file_population_manager import FilePopulationManager
+from lib.cli.menus.main_menu_manager import MainMenuManager
 from lib.cli.utils.convert_csv_to_json import convert_distance_table_to_json, convert_package_file_to_json
 from lib.cli.utils.meta import clear_screen
 
 
 # Delegate the CLIManager with the composition Pattern
 # - MenuManager handles the menu display and user choice handling
+# - PopulationManager handles the file population menu
 # - Analytics Manager composes analytics for the following
 #	- Package Manager displays package information
 # 	- Truck Manager displays truck information
@@ -24,11 +26,14 @@ class CLIManager:
         """
         self.first_run = first_run
         
-        # Instantiate the proper classes
+        # Instantiate the base menu classes
         self.main_menu_manager = MainMenuManager(self)  # Instantiate MenuManager with a reference to this CLIManager instance
-        ## These are composition classes are used to display the analytics
+        self.file_population_manager = FilePopulationManager(self)
+        
+        ## These composition classes are used to display the analytics
         self.package_manager = PackageManager()
         self.truck_manager = TruckManager()
+        
         ## Initialize AnalyticsManager to compose the sub managers
         self.analytics_manager = AnalyticsManager(self, self.package_manager, self.truck_manager)
         
@@ -80,6 +85,6 @@ class CLIManager:
         """
         while True:
             clear_screen()  # Clear the screen for a clean menu display each time
-            self.main_menu_manager.show_menu_and_capture_choice()  # Correct method call
+            self.main_menu_manager.show_menu_and_capture_choice()
 
             

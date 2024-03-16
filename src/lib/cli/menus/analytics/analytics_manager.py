@@ -7,7 +7,7 @@ class AnalyticsManager:
         self.package_manager = package_manager
         self.truck_manager = truck_manager
         
-    def show_analytics_menu(self, cli_manager, menu_manager):
+    def show_analytics_menu(self):
         """
         Displays the analytics menu and handles the user's choice for viewing different analytics.
 
@@ -16,7 +16,7 @@ class AnalyticsManager:
         - menu_manager: Instance of MenuManager class for handling choices.
         """
         clear_screen()
-        cli_manager._display_header("Analytics Menu")
+        self.cli_manager._display_header("Analytics Menu")
 
         print("1. Package Analytics")
         print("2. Truck Analytics")
@@ -24,7 +24,7 @@ class AnalyticsManager:
         print("b. Return to Main Menu")
 
         choice = input("Enter choice (1/2/b): ").lower()
-        menu_manager.handle_analytics_choice(choice)
+        self.handle_analytics_choice(choice)
         
     def handle_analytics_choice(self, cli_manager, choice):
         # Logic to handle user choice
