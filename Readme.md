@@ -58,10 +58,10 @@
 	- [ ] package weight
 	- [ ] delivery status (i.e., at the hub, en route, or delivered), including the delivery time
 
-- [ ] C - Write an original program that will deliver all packages and meet all requirements using the attached supporting documents “Salt Lake City Downtown Map,” “WGUPS Distance Table,” and “WGUPS Package File.”
+- [x] C - Write an original program that will deliver all packages and meet all requirements using the attached supporting documents “Salt Lake City Downtown Map,” “WGUPS Distance Table,” and “WGUPS Package File.”
 
 	- [x] Create an identifying comment within the first line of a file named “main.py” that includes your student ID.
-	- [ ] Include comments in your code to explain both the process and the flow of the program.
+	- [x] Include comments in your code to explain both the process and the flow of the program.
 
 - [ ] D -  Provide an intuitive interface for the user to view the delivery status (including the delivery time) of any package at any time and the total mileage traveled by all trucks. (The delivery status should report the package as at the hub, en route, or delivered. Delivery status must include the time.)
 

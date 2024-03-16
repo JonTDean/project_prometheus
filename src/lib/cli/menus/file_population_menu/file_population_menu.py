@@ -4,7 +4,7 @@ from typing import Tuple, Optional
 from typing import TYPE_CHECKING
 # Local
 from lib.cli.utils.convert_csv_to_json import convert_distance_table_to_json, convert_package_file_to_json
-from lib.cli.utils.get_file_path import get_file_path
+from lib.cli.menus.main_menu.get_file_path import get_file_path
 from lib.cli.utils.meta import UserBack, UserExit, clear_screen, exit_process
 
 # To prevent circular dependency issues

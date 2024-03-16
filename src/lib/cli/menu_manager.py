@@ -1,18 +1,19 @@
 # MenuManager.py
 # Local
-from lib.cli.menus.file_population_menu import process_file_population
-from lib.cli.menus.main_menu import show_main_menu
+from lib.cli.menus.file_population_menu.file_population_menu import process_file_population
+from lib.cli.menus.main_menu.main_menu import show_main_menu
+from lib.cli.menus.package_menu.package_menu import PackageMenu
 from lib.cli.utils.meta import clear_screen, exit_process
 
 class MenuManager:
     def __init__(self, cli_manager):
         """
         Initializes the MenuManager with a CLIManager instance to access shared functionality.
-
+  
         Parameters:
         - cli_manager: Instance of the CLIManager class.
         """
-        self.cli_manager = cli_manager
+        self.package_menu = PackageMenu(self.cli_manager.package_manager)
 
     def show_main_menu(self) -> str:
         """

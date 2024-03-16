@@ -8,6 +8,7 @@ Implement a custom hash table for storing package information.
 ### Plan
 - [ ] **Define Hash Table Structure**: Determine the hash table size and collision handling method (e.g., chaining or open addressing).
 - [ ] **Implement Insertion Function**: Create a function that takes the package ID and stores package details in the hash table.
+
 ## B. Develop a Look-up Function
 
 ### Objective
