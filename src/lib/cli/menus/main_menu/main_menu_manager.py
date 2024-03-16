@@ -1,6 +1,7 @@
 # Local
-from lib.cli.menus.file_population_menu.file_population_menu import process_file_population
-from lib.cli.utils.meta import exit_process
+from lib.cli.menus.analytics.analytics_manager import AnalyticsManager
+from lib.cli.menus.file_population_menu.file_population_menu import show_file_population_menu
+from lib.cli.utils.meta import clear_screen, exit_process
 
 class MainMenuManager:
     def __init__(self, cli_manager):
@@ -26,26 +27,26 @@ class MainMenuManager:
         Returns:
             The user's choice as a lowercase string.
         """
+        clear_screen()
         # Display menu header
         self.cli_manager._display_header("Main Menu")
+        self.cli_manager._display_meta()
 
         # Display menu options
         self._display_menu()
 
         # Display footer with meta information and current time
-        self.cli_manager._display_footer()
 
         # Capture and return the user's choice
-        return input("Enter choice: ").lower()
+        return input("\nEnter choice (a/p/e): ").lower()
 
     def _display_menu(self):
         """
         Prints the main menu options to the console.
         """
-        print("\nMain Menu Options:")
-        print("1. View Analytics")
-        print("\np. Populate (Custom or Original) delivery data and package data")
-        print("e. Exit")
+        print("a. View Analytics")
+        print("p. Populate (Custom or Original) delivery data and package data")
+        print("e. Exit Application")
 
     def handle_user_choice(self, choice: str):
         """
@@ -54,9 +55,12 @@ class MainMenuManager:
         Parameters:
         - choice: The user's selected option as a string.
         """
-        if choice == "p":
+        if choice == "v":
+            # Delegate to show analytics menu
+            AnalyticsManager.show_analytics_menu(self.cli_manager, self)
+        elif choice == "p":
             # Delegate to process file population using the provided paths
-            process_file_population(self.cli_manager)
+            show_file_population_menu(self.cli_manager)
         elif choice == "e":
             # Trigger application exit
             exit_process()

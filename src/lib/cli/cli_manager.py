@@ -3,6 +3,9 @@ import os
 from pathlib import Path
 from datetime import datetime
 # Local
+from lib.cli.menus.analytics.analytics_manager import AnalyticsManager
+from lib.cli.menus.analytics.sub_menus.PackageManager import PackageManager
+from lib.cli.menus.analytics.sub_menus.TruckManager import TruckManager
 from lib.cli.menus.main_menu.main_menu_manager import MainMenuManager
 from lib.cli.utils.convert_csv_to_json import convert_distance_table_to_json, convert_package_file_to_json
 from lib.cli.utils.meta import clear_screen
@@ -13,9 +16,6 @@ from lib.cli.utils.meta import clear_screen
 # - Analytics Manager composes analytics for the following
 #	- Package Manager displays package information
 # 	- Truck Manager displays truck information
-# 	- Distance Manager displays distance information
-# 	- Delivery Manager displays delivery information
-# 	- Route Manager displays route information
 class CLIManager:
     def __init__(self, first_run=True) -> None:
         """
@@ -23,7 +23,16 @@ class CLIManager:
         and ensuring the necessary directories exist.
         """
         self.first_run = first_run
+        
+        # Instantiate the proper classes
         self.main_menu_manager = MainMenuManager(self)  # Instantiate MenuManager with a reference to this CLIManager instance
+        ## These are composition classes are used to display the analytics
+        self.package_manager = PackageManager()
+        self.truck_manager = TruckManager()
+        ## Initialize AnalyticsManager to compose the sub managers
+        self.analytics_manager = AnalyticsManager(self, self.package_manager, self.truck_manager)
+        
+        # Ensure the directories and files are properly created
         self._setup_base_directory()
         self._ensure_directories_exist(['files', 'data'])
         self._convert_default_files_to_json()
@@ -54,16 +63,14 @@ class CLIManager:
         else:
             print(f"=========== WGUPS Admin Console - {menu_name} ===============")
 
-    def _display_footer(self) -> None:
+    def _display_meta(self) -> None:
         """Displays meta information in the footer."""
         # Check for the existence of JSON files
         distance_exists = '[✓]' if os.path.exists(self.base_dir / "data" / "distance_table.json") else '[X]'
         package_exists = '[✓]' if os.path.exists(self.base_dir / "data" / "package_file.json") else '[X]'
 
-        print(f"\nMeta Information: Distance Table {distance_exists}, Package File {package_exists}")
-        # Get current time
         current_time = datetime.now().strftime("%H:%M:%S")
-        print(f"Current Time: {current_time}")
+        print(f"Distance Table {distance_exists}, Package File {package_exists} | Current Time: {current_time}\n")
 
 
     def run(self) -> None:
