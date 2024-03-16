@@ -8,7 +8,14 @@ from lib.cli.utils.convert_csv_to_json import convert_distance_table_to_json, co
 from lib.cli.utils.meta import clear_screen
 
 
-        
+# Delegate the CLIManager with the composition Pattern
+# - MenuManager handles the menu display and user choice handling
+# - Analytics Manager composes analytics for the following
+#	- Package Manager displays package information
+# 	- Truck Manager displays truck information
+# 	- Distance Manager displays distance information
+# 	- Delivery Manager displays delivery information
+# 	- Route Manager displays route information
 class CLIManager:
     def __init__(self, first_run=True) -> None:
         """
