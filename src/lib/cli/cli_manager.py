@@ -4,12 +4,14 @@ from pathlib import Path
 from datetime import datetime
 # Local
 from lib.cli.menus.analytics.analytics_manager import AnalyticsManager
-from lib.cli.menus.analytics.sub_menus.PackageManager import PackageManager
-from lib.cli.menus.analytics.sub_menus.TruckManager import TruckManager
+from lib.cli.menus.analytics.package_manager import PackageManager
+from lib.cli.menus.analytics.truck_manager import TruckManager
 from lib.cli.menus.file_population_manager import FilePopulationManager
 from lib.cli.menus.main_menu_manager import MainMenuManager
 from lib.cli.utils.convert_csv_to_json import convert_distance_table_to_json, convert_package_file_to_json
 from lib.cli.utils.meta import clear_screen
+from lib.delivery_system.DSPackage import DSPackage
+from lib.delivery_system.DSTruck import DSTruck
 
 
 # Delegate the CLIManager with the composition Pattern
@@ -25,22 +27,27 @@ class CLIManager:
         and ensuring the necessary directories exist.
         """
         self.first_run = first_run
+        self.base_dir = Path(__file__).resolve().parents[3]
+        self.data_available = False  # Track availability of data for analytics
+        self.distance_json_path = self.base_dir / "data" / "distance_table.json"
+        self.package_json_path = self.base_dir / "data" / "package_file.json"
         
-        # Instantiate the base menu classes
-        self.main_menu_manager = MainMenuManager(self)  # Instantiate MenuManager with a reference to this CLIManager instance
-        self.file_population_manager = FilePopulationManager(self)
-        
-        ## These composition classes are used to display the analytics
-        self.package_manager = PackageManager()
-        self.truck_manager = TruckManager()
-        
-        ## Initialize AnalyticsManager to compose the sub managers
-        self.analytics_manager = AnalyticsManager(self, self.package_manager, self.truck_manager)
-        
-        # Ensure the directories and files are properly created
+        # Setup directories and files
         self._setup_base_directory()
         self._ensure_directories_exist(['files', 'data'])
         self._convert_default_files_to_json()
+
+        # Instantiate menu managers
+        self.main_menu_manager = MainMenuManager(self)
+        self.file_population_manager = FilePopulationManager(self)
+
+        # Instantiate analytics-related managers if data is available
+        if self.data_available:
+            self.ds_package = DSPackage(self.package_json_path)
+            self.ds_truck = DSTruck(self.distance_json_path)
+            self.package_manager = PackageManager(self, self.ds_package)
+            self.truck_manager = TruckManager(self, self.ds_truck)
+            self.analytics_manager = AnalyticsManager(self, self.package_manager, self.truck_manager)
 
     def _setup_base_directory(self) -> None:
         """Sets up the base directory and default file paths."""
@@ -52,13 +59,18 @@ class CLIManager:
         """Ensures that necessary directories exist within the base directory."""
         for dir_name in directory_names:
             (self.base_dir / dir_name).mkdir(exist_ok=True)
+            
 
     # Call this on startup, this way we can reliably 
     # have an automatic way of reading the data
     def _convert_default_files_to_json(self) -> None:
         """Converts default CSV files to JSON format."""
-        convert_distance_table_to_json(self.default_distance_table_path, self.base_dir / "data" / "distance_table.json")
-        convert_package_file_to_json(self.default_package_file_path, self.base_dir / "data" / "package_file.json")
+        # Check if JSON files exist to set data_available flag
+        if self.distance_json_path.exists() and self.package_json_path.exists():
+            self.data_available = True
+            
+        convert_distance_table_to_json(self.default_distance_table_path, self.distance_json_path)
+        convert_package_file_to_json(self.default_package_file_path, self.package_json_path)
         
     def _display_header(self, menu_name=None) -> None:
         """Displays the CLI header dynamically based on the menu context."""

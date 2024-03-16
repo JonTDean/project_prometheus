@@ -42,7 +42,11 @@ class MainMenuManager:
         """
         Prints the main menu options to the console.
         """
-        print("a. View Analytics")
+        if self.cli_manager.data_available:
+            print("a. View Analytics")
+        else:
+            print("a. View Analytics (No Data Available, please generate with option 'p')")
+            
         print("p. Populate (Custom or Original) delivery data and package data")
         print("e. Exit Application")
 
@@ -53,9 +57,9 @@ class MainMenuManager:
         Parameters:
         - choice: The user's selected option as a string.
         """
-        if choice == "v":
+        if choice == "a":
             # Delegate to show analytics menu
-            self.cli_manager.analytics_manager.show_analytics_menu(self.cli_manager, self)
+            self.cli_manager.analytics_manager.show_analytics_menu()
         elif choice == "p":
             # Delegate to process file population using the provided paths
             self.cli_manager.file_population_manager.show_file_population_menu()

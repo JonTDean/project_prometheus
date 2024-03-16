@@ -18,7 +18,7 @@ class FilePopulationManager:
         clear_screen()
         self.cli_manager._display_header("File Population Menu")
         self.cli_manager._display_meta()
-        print("\n1. Use the current csv files (Default)")
+        print("1. Use the current csv files (Default)")
         print("2. Provide the fully qualified file paths of the csv files to be converted")
         print("m. Return to main menu")
         print("e. Exit Application")
