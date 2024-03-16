@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 # Local
-from lib.cli.menu_manager import MenuManager
+from lib.cli.menus.main_menu.main_menu_manager import MainMenuManager
 from lib.cli.utils.convert_csv_to_json import convert_distance_table_to_json, convert_package_file_to_json
 from lib.cli.utils.meta import clear_screen
 
@@ -23,7 +23,7 @@ class CLIManager:
         and ensuring the necessary directories exist.
         """
         self.first_run = first_run
-        self.menu_manager = MenuManager(self)  # Instantiate MenuManager with a reference to this CLIManager instance
+        self.main_menu_manager = MainMenuManager(self)  # Instantiate MenuManager with a reference to this CLIManager instance
         self._setup_base_directory()
         self._ensure_directories_exist(['files', 'data'])
         self._convert_default_files_to_json()
@@ -39,6 +39,8 @@ class CLIManager:
         for dir_name in directory_names:
             (self.base_dir / dir_name).mkdir(exist_ok=True)
 
+    # Call this on startup, this way we can reliably 
+    # have an automatic way of reading the data
     def _convert_default_files_to_json(self) -> None:
         """Converts default CSV files to JSON format."""
         convert_distance_table_to_json(self.default_distance_table_path, self.base_dir / "data" / "distance_table.json")
@@ -70,7 +72,7 @@ class CLIManager:
         This function delegates the showing of menus and handling of user input to the MenuManager.
         """
         while True:
-            clear_screen()
-            choice = self.menu_manager.show_main_menu()  # Delegate to MenuManager
-            self.menu_manager.handle_user_choice(choice)  # Delegate choice handling to MenuManager
+            clear_screen()  # Clear the screen for a clean menu display each time
+            self.main_menu_manager.show_menu_and_capture_choice()  # Correct method call
+
             
