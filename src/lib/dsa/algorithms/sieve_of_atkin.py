@@ -15,7 +15,8 @@ class SieveOfAtkin:
         Generates all prime numbers up to the given limit using the Sieve of Atkin algorithm.
         
         Complexity Analysis:
-        - Time: O(n/log log n), where n is the limit.
+        - Time: O(n/(log(log n))), where n is the limit.
+            - Good explanation on this runtime: https://stackoverflow.com/questions/16472012/what-would-cause-an-algorithm-to-have-olog-log-n-complexity
         - Space: O(n), due to the storage requirements of the sieve array.
         
         Parameters:
