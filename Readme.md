@@ -93,7 +93,15 @@ python src/main.py -test
 
 ### Running Specific Tests
 
-To run tests in specific directories, use the -dirs flag followed by the directory names within tests.
+To run tests in specific directories or files, use the -dirs flag followed by the directory names within tests.
+
+#### Target File:
+
+To run tests in a specific file, such as test_xxhash32.py:
+
+```zsh
+python src/main.py -test -dirs algorithms/test_xxhash32.py
+```
 
 #### Single Directory:
 
@@ -102,10 +110,19 @@ For example, to run tests in a single directory, such as algorithms :
 ```zsh
 python src/main.py -test -dirs algorithms
 ```
+
 #### Multiple Directories:
 
 To run tests in multiple directories, such as algorithms and data_structures:
 
 ```zsh
 python src/main.py -test -dirs algorithms data_structures
+```
+
+#### Nested Directories:
+
+To run tests in nested directories, such as algorithms/aco:
+
+```zsh
+python src/main.py -test -dirs algorithms/aco
 ```

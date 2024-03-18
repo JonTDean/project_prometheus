@@ -58,7 +58,7 @@ class XXHash_32:
         - TypeError: If the key type is not str, int, or bytes.
         """
         if debug:
-            print(f"Preparing key: {key}")
+            print(f"[DEBUG] Preparing key: {key}")
             
         if isinstance(key, str):
             return key.encode('utf-8')
@@ -102,12 +102,16 @@ class XXHash_32:
             for j in range(4):  # Process each of the four 32-bit blocks
                 k = int.from_bytes(input_bytes[i:i+4], byteorder='little')
                 if debug:
-                    print(f"Processing chunk [{i}:{i+4}], value: {k}")
+                    print(f"[DEBUG] Processing chunk [{i}:{i+4}], value: {k}")
                     
                 hash_val += k * XXHash_32.PRIME32_2
                 hash_val = ((hash_val << 13) | (hash_val >> 19)) & 0xFFFFFFFF
                 hash_val = hash_val * XXHash_32.PRIME32_1 & 0xFFFFFFFF
                 i += 4
+                if debug:
+                    print(f"[DEBUG] Updated hash: {hash_val}")
+        print(f"[DEBUG] Final hash value after processing chunks: {hash_val}")
+        
         return hash_val, i
 
     @staticmethod
@@ -131,13 +135,18 @@ class XXHash_32:
         - Space: O(1), operates within constant space.
         """
         if debug:
-            print(f"Processing remaining bytes from index: {index}")
+            print(f"[DEBUG] Processing remaining bytes from index: {index}")
             
         while index < len(input_bytes):
             hash_val += input_bytes[index] * XXHash_32.PRIME32_5
             hash_val = ((hash_val << 11) | (hash_val >> 21)) & 0xFFFFFFFF
             hash_val *= XXHash_32.PRIME32_1 & 0xFFFFFFFF
             index += 1
+            if debug:
+                print(f"[DEBUG] Processing byte [{index}], value: {input_bytes[index]}")
+                print(f"[DEBUG] Updated hash: {hash_val}")
+        print(f"[DEBUG] Final hash value after processing remaining bytes: {hash_val}")
+        
         return hash_val
 
     @staticmethod
@@ -154,13 +163,17 @@ class XXHash_32:
         - Space: O(1), constant space complexity.
         """
         if debug:
-            print(f"Applying avalanche effect on hash_val: {hash_val}")
+            print(f"[DEBUG] Applying avalanche effect on hash_val: {hash_val}")
             
         hash_val ^= hash_val >> 15
         hash_val *= XXHash_32.PRIME32_2 & 0xFFFFFFFF
         hash_val ^= hash_val >> 13
         hash_val *= XXHash_32.PRIME32_3 & 0xFFFFFFFF
         hash_val ^= hash_val >> 16
+        
+        if debug:
+            print(f"[DEBUG] Hash value after avalanche effect: {hash_val}")
+            
         return hash_val
 
     @staticmethod
@@ -186,7 +199,7 @@ class XXHash_32:
         - Space: O(1), operates within constant space.
         """
         if debug:
-            print(f"Starting hash computation for key: {key} with seed: {seed}")
+            print(f"[DEBUG] Starting hash computation for key: {key} with seed: {seed}")
             
         input_bytes = XXHash_32.prepare_key(key)
         # The initial hash value is computed as: H_0 = seed + PRIME32_5 + len(input_bytes),
@@ -195,6 +208,10 @@ class XXHash_32:
         hash_val, index = XXHash_32.process_chunks(input_bytes, hash_val)
         hash_val = XXHash_32.process_remaining(input_bytes, hash_val, index)
         hash_val = XXHash_32.avalanche_effect(hash_val)
+        
+        if debug:
+            print(f"[DEBUG] Updated hash: {hash_val}")
+            
         return hash_val & 0xFFFFFFFF
     
     

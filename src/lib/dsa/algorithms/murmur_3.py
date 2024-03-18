@@ -8,8 +8,8 @@ class Murmur3_32:
     efficiency for integers, i.e. PackageID.
     (https://www.synnada.ai/glossary/murmurhash)
     
-	Translated From:
- 	- https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
+    Translated From:
+     - https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
     
     Attributes:
     - Constants (c1, c2, r1, r2, m, n): Predefined values used in the hash computation, as per
@@ -23,7 +23,7 @@ class Murmur3_32:
     n = 0xe6546b64
     
     @staticmethod
-    def prepare_key(key: Union[str, int, bytes]) -> bytes:
+    def prepare_key(key: Union[str, int, bytes], debug:bool = False) -> bytes:
         """
         Prepares the key for hashing by converting it into a byte sequence.
         
@@ -47,6 +47,9 @@ class Murmur3_32:
         Raises:
         - TypeError: If the key type is not one of the expected types (str, int, bytes).
         """
+        if debug:
+            print(f"[DEBUG] Prepared key: {key}")
+            
         if isinstance(key, str):
             # Strings are encoded to bytes. UTF-8 is chosen for its wide applicability
             # and compatibility with a broad range of characters, supporting internationalization.
@@ -62,7 +65,7 @@ class Murmur3_32:
             raise TypeError("Key must be of type str, int, or bytes.")
         
     @staticmethod
-    def process_key_chunks(key: bytes) -> Generator[int, None, None]:
+    def process_key_chunks(key: bytes, debug:bool = False) -> Generator[int, None, None]:
         """
         Processes the key in 4-byte chunks, applying mixing operations defined by the MurmurHash algorithm.
 
@@ -94,39 +97,12 @@ class Murmur3_32:
             k *= Murmur3_32.c1
             k = ((k << Murmur3_32.r1) | (k >> (32 - Murmur3_32.r1))) & 0xFFFFFFFF
             k *= Murmur3_32.c2
+            if debug:
+                print(f"[DEBUG] Processing chunk: {k}")
             yield k
             
     @staticmethod
-    def hash(key: Union[str, int, bytes], seed) -> int:
-        """
-        Implements the MurmurHash3 algorithm for a 32-bit hash function,
-        computing the 32-bit MurmurHash3 hash of the key.
-
-        Complexity Analysis:
-        - Time: O(N), where N is the length of the key. This is due to the processing of each chunk
-                of the key and the final mixing steps.
-                
-        - Space: O(1), uses a constant amount of space regardless of the input size, demonstrating
-                efficient memory management.
-
-        Parameters:
-        - key (Union[str, int, bytes]): The key to hash.
-
-        Returns:
-        - int: A 32-bit hash of the key.
-        """
-        key = Murmur3_32.prepare_key(key)
-        hash_val = seed
-
-        for chunk in Murmur3_32.process_key_chunks(key):
-            hash_val ^= chunk
-            hash_val = ((hash_val << Murmur3_32.r2) | (hash_val >> (32 - Murmur3_32.r2))) & 0xFFFFFFFF
-            hash_val = (hash_val * Murmur3_32.m + Murmur3_32.n) & 0xFFFFFFFF
-
-        return Murmur3_32.avalanche_effect(hash_val, key)
-
-    @staticmethod
-    def avalanche_effect(hash_val: int, key: bytes) -> int:
+    def avalanche_effect(hash_val: int, key: bytes, debug:bool = False) -> int:
         """
         Applies avalanche mixing steps to the hash to
         ensure even distribution of high and low bits.
@@ -146,6 +122,9 @@ class Murmur3_32:
         Returns:
         - The finalized 32-bit hash.
         """
+        if debug:
+            print(f"[DEBUG] Applying avalanche effect: {hash_val}")
+            
         # Mix in the length of the key. This step adds another layer of input dependency,
         # ensuring that keys of different lengths contribute to the hash value.
         hash_val ^= len(key)
@@ -160,4 +139,46 @@ class Murmur3_32:
         hash_val *= 0xc2b2ae35
         hash_val &= 0xFFFFFFFF
         hash_val ^= hash_val >> 16
+        
+        if debug:
+            print(f"[DEBUG] Avalanche effect applied: {hash_val}")
+            
         return hash_val & 0xFFFFFFFF
+
+    @staticmethod
+    def hash(key: Union[str, int, bytes], seed, debug:bool = False) -> int:
+        """
+        Implements the MurmurHash3 algorithm for a 32-bit hash function,
+        computing the 32-bit MurmurHash3 hash of the key.
+
+        Complexity Analysis:
+        - Time: O(N), where N is the length of the key. This is due to the processing of each chunk
+                of the key and the final mixing steps.
+                
+        - Space: O(1), uses a constant amount of space regardless of the input size, demonstrating
+                efficient memory management.
+
+        Parameters:
+        - key (Union[str, int, bytes]): The key to hash.
+
+        Returns:
+        - int: A 32-bit hash of the key.
+        """
+        key_bytes = Murmur3_32.prepare_key(key, debug=debug)
+        hash_val = seed
+        if debug:
+            print(f"[DEBUG] Starting hash computation for key: {key} with seed: {seed}")
+            
+        for chunk in Murmur3_32.process_key_chunks(key_bytes, debug=debug):
+            hash_val ^= chunk
+            hash_val = ((hash_val << Murmur3_32.r2) | (hash_val >> (32 - Murmur3_32.r2))) & 0xFFFFFFFF
+            hash_val = (hash_val * Murmur3_32.m + Murmur3_32.n) & 0xFFFFFFFF
+            if debug:
+                print(f"[DEBUG] Updated hash: {hash_val}")
+                
+        final_hash = Murmur3_32.avalanche_effect(hash_val, key_bytes, debug=debug)
+        
+        if debug:
+            print(f"[DEBUG] Final hash: {final_hash}")
+            
+        return final_hash

@@ -15,13 +15,13 @@ from lib.cli.cli_manager import CLIManager
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='CLI tool for WGUPS package delivery system.')
     parser.add_argument('-test', action='store_true', help='Run all tests in the tests folder')
-    parser.add_argument('-dirs', nargs='*', help='Specify directories within the tests folder to run tests from')
+    parser.add_argument('-dirs', nargs='*', help='Specify directories or files within the tests folder to run tests from')
+    parser.add_argument('--func', nargs='*', help='Specify test functions to run')
 
     args = parser.parse_args()
 
     if args.test:
-        # Corrected to pass project_root
-        run_tests(project_root, args.dirs)
+        run_tests(project_root, test_paths=args.dirs, test_funcs=args.func)
     else:
         cli_manager = CLIManager()
         cli_manager.run()
