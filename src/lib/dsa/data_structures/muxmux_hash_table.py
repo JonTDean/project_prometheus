@@ -1,4 +1,4 @@
-from lib.dsa.algorithms.sieve_of_atkin import SieveOfAtkin, sieve_of_atkin
+from lib.dsa.algorithms.sieve_of_atkin import SieveOfAtkin
 from lib.dsa.algorithms.murmur_3 import Murmur3_32
 from lib.dsa.algorithms.xxHash import XXHash_32
 

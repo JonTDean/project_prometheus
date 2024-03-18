@@ -40,7 +40,7 @@ class XXHash_32:
 
 
     @staticmethod
-    def prepare_key(key: Union[str, int, bytes]) -> bytes:
+    def prepare_key(key: Union[str, int, bytes], debug:bool = False) -> bytes:
         """
         Prepares the key for hashing by converting it into a byte sequence.
 
@@ -49,13 +49,17 @@ class XXHash_32:
 
         Parameters:
         - key (Union[str, int, bytes]): The original key to be hashed, which can be of type str, int, or bytes.
-
+        - debug: A boolean flag to print the key and its byte representation for debugging purposes.
+  
         Returns:
         - bytes: The key converted into a byte sequence suitable for hashing.
 
         Raises:
         - TypeError: If the key type is not str, int, or bytes.
         """
+        if debug:
+            print(f"Preparing key: {key}")
+            
         if isinstance(key, str):
             return key.encode('utf-8')
         elif isinstance(key, int):
@@ -68,7 +72,7 @@ class XXHash_32:
             raise TypeError("Key must be of type str, int, or bytes.")
 
     @staticmethod
-    def process_chunks(input_bytes: bytes, initial_hash: int) -> int:
+    def process_chunks(input_bytes: bytes, initial_hash: int, debug:bool = False) -> int:
         """
         Processes each 16-byte chunk of the input, applying the xxHash algorithm's mixing formula.
         
@@ -82,6 +86,11 @@ class XXHash_32:
         
         The updated hash value is then summed with this processed block.
         
+        Parameters:
+        input_bytes (bytes): The input bytes to be hashed.
+        initial_hash (int): The initial hash value to be used in the computation.
+        debug: A boolean flag to print the chunk being processed and its value for debugging purposes.
+        
         Complexity:
         - Time: O(n/16), where n is the length of the input_bytes. Each loop iteration processes 16 bytes.
         - Space: O(1), operates within constant space independent of the input size.
@@ -92,6 +101,9 @@ class XXHash_32:
         while i <= total_len - 16:
             for j in range(4):  # Process each of the four 32-bit blocks
                 k = int.from_bytes(input_bytes[i:i+4], byteorder='little')
+                if debug:
+                    print(f"Processing chunk [{i}:{i+4}], value: {k}")
+                    
                 hash_val += k * XXHash_32.PRIME32_2
                 hash_val = ((hash_val << 13) | (hash_val >> 19)) & 0xFFFFFFFF
                 hash_val = hash_val * XXHash_32.PRIME32_1 & 0xFFFFFFFF
@@ -99,7 +111,7 @@ class XXHash_32:
         return hash_val, i
 
     @staticmethod
-    def process_remaining(input_bytes: bytes, hash_val: int, index: int) -> int:
+    def process_remaining(input_bytes: bytes, hash_val: int, index: int, debug:bool = False) -> int:
         """
         Processes any remaining bytes after chunk processing, applying the xxHash algorithm's mixing formula.
         
@@ -108,10 +120,19 @@ class XXHash_32:
         hash_val = (hash_val << 11) | (hash_val >> 21) mux 0xFFF
         hash_val = hash_val * (PRIME32_1 mux 0xFFF)
         
+        Parameters:
+        - input_bytes (bytes): The input bytes to be hashed.
+        - hash_val (int): The current hash value to be used in the computation.
+        - index (int): The current index in the input_bytes.
+        - debug: A boolean flag to print the remaining bytes and their value for debugging purposes.
+        
         Complexity:
         - Time: O(m), where m is the number of remaining bytes, less than 16.
         - Space: O(1), operates within constant space.
         """
+        if debug:
+            print(f"Processing remaining bytes from index: {index}")
+            
         while index < len(input_bytes):
             hash_val += input_bytes[index] * XXHash_32.PRIME32_5
             hash_val = ((hash_val << 11) | (hash_val >> 21)) & 0xFFFFFFFF
@@ -120,14 +141,21 @@ class XXHash_32:
         return hash_val
 
     @staticmethod
-    def avalanche_effect(hash_val: int) -> int:
+    def avalanche_effect(hash_val: int, debug:bool = False) -> int:
         """
         Finalizes the hash calculation, applying an avalanche effect.
+
+        Parameters:
+        - hash_val (int): The current hash value to be finalized.
+        - debug: A boolean flag to print the hash value before and after the avalanche effect for debugging purposes.
         
         Complexity:
         - Time: O(1), constant time complexity as operations do not depend on input size.
         - Space: O(1), constant space complexity.
         """
+        if debug:
+            print(f"Applying avalanche effect on hash_val: {hash_val}")
+            
         hash_val ^= hash_val >> 15
         hash_val *= XXHash_32.PRIME32_2 & 0xFFFFFFFF
         hash_val ^= hash_val >> 13
@@ -136,7 +164,7 @@ class XXHash_32:
         return hash_val
 
     @staticmethod
-    def hash(key: Union[str, int, bytes], seed: int = 0) -> int:
+    def hash(key: Union[str, int, bytes], seed: int = 0, debug:bool = False) -> int:
         """
         Calculates the xxHash32 hash of the input bytes using the provided seed.
 
@@ -157,6 +185,9 @@ class XXHash_32:
                 processing of all 16-byte chunks, handling remaining bytes, and finalization steps.
         - Space: O(1), operates within constant space.
         """
+        if debug:
+            print(f"Starting hash computation for key: {key} with seed: {seed}")
+            
         input_bytes = XXHash_32.prepare_key(key)
         # The initial hash value is computed as: H_0 = seed + PRIME32_5 + len(input_bytes),
         # where len(input_bytes) is the total length of the input in bytes.
