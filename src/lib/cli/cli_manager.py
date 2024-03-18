@@ -10,8 +10,8 @@ from lib.cli.menus.file_population_manager import FilePopulationManager
 from lib.cli.menus.main_menu_manager import MainMenuManager
 from lib.cli.utils.convert_csv_to_json import convert_distance_table_to_json, convert_package_file_to_json
 from lib.cli.utils.meta import clear_screen
-from lib.delivery_system.DSPackage import DSPackage
-from lib.delivery_system.DSTruck import DSTruck
+from lib.delivery_system.delivery_system_package import DSPackage
+from lib.delivery_system.delivery_system_truck import DSTruck
 
 
 # Delegate the CLIManager with the composition Pattern
