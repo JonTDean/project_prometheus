@@ -8,11 +8,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 class BaseTest(unittest.TestCase):
     def setUp(self):
-        self.test_passed = False
+        super().setUp()
+        self._test_success = None 
 
     def tearDown(self):
-        if self.test_passed:
+        super().tearDown()
+        if self._test_success is True:
             print(f"{self.id()}: Success")
+        elif self._test_success is False:
+            print(f"{self.id()}: Failure or error occurred")
+        else:
+            print(f"{self.id()}: Test outcome not captured")
 
     def run(self, result=None):
         super().run(result)

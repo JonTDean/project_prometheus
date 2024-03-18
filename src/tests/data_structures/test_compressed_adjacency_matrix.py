@@ -1,5 +1,3 @@
-# Stdlib
-import unittest
 # Local
 from src.tests.BaseTest import BaseTest
 from src.lib.dsa.data_structures.compressed_adjacency_matrix import CompressedAdjacencyMatrix
@@ -13,6 +11,7 @@ class TestCompressedAdjacencyMatrix(BaseTest):
         """
         Setup common test data used in the tests.
         """
+        super().setUp()
         self.nodes = ['A', 'B', 'C', 'D']
         self.edges = [('A', 'B', 1.0), ('B', 'C', 2.0), ('C', 'D', 3.0)]
         self.matrix = CompressedAdjacencyMatrix(self.nodes, self.edges)
@@ -37,13 +36,15 @@ class TestCompressedAdjacencyMatrix(BaseTest):
         """
         Test pheromone decay on all edges.
         """
+        # Ensure all initial edges are processed.
+        self.matrix.apply_updates()
         self.matrix.apply_decay()
         # Check decayed weight
         for start_node, end_node, original_weight in self.edges:
             decayed_weight = self.matrix.get_weight(start_node, end_node)
             expected_weight = original_weight * self.matrix.decay_factor
             self.assertAlmostEqual(decayed_weight, expected_weight, msg=f"Decay failed for edge {start_node}-{end_node}.")
-
+        
     def test_change_tracking(self):
         """
         Test tracking of changes.
