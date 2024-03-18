@@ -1,5 +1,18 @@
+# Stdlib
 import csv
 import json
+
+def clean_string(s):
+    """
+    Removes newline characters from a string.
+
+    Parameters:
+    - s (str): The original string.
+
+    Returns:
+    - str: The cleaned string.
+    """
+    return s.replace('\n', '').strip()
 
 #* We are unable to use third-party packages so we must use the csv format.
 def convert_distance_table_to_json(input_csv_path, output_json_path):
@@ -20,7 +33,7 @@ def convert_distance_table_to_json(input_csv_path, output_json_path):
             headers = next(reader)  # This should now correctly read the headers row
             
             # Process the headers to clean and prepare them
-            cleaned_headers = [header.strip() for header in headers[2:] if header.strip()]  # Skip the first two columns and clean the headers
+            cleaned_headers = [header.strip() for header in headers[2:] if clean_string(header)]  # Skip the first two columns and clean the headers
 
             locations_data = []
             for row in reader:
@@ -30,14 +43,14 @@ def convert_distance_table_to_json(input_csv_path, output_json_path):
 
                 # Prepare the routes with correct names and distances
                 routes = [
-                    {"name": cleaned_headers[i], "distance": distance.strip()}
+                    {"name": cleaned_headers[i], "distance": clean_string(distance)}
                     for i, distance in enumerate(distances) if distance
                 ]
 
                 # Append this location's data to the overall list
                 locations_data.append({
-                    "name": location_name.strip(),
-                    "hub_name": hub_name.strip(),
+                    "name": clean_string(location_name),
+                    "hub_name": clean_string(hub_name),
                     "routes": routes
                 })
 
@@ -62,30 +75,43 @@ def convert_package_file_to_json(input_csv_path, output_json_path):
     - input_csv_path: The file path for the input CSV file.
     - output_json_path: The file path for the output JSON file.
     """
-    data = []
-    processed_data = []
+    key_mapping = {
+        "Package\nID": "id",
+        "Address": "address",
+        "City ": "city",
+        "State": "state",
+        "Zip": "zip",
+        "Delivery\nDeadline": "deadline",
+        "Weight\nKILO": "weight",
+        "Special Notes": "notes"
+    }
+
     try:
-        # Open the CSV file starting from line 8 to read column headers and data
         with open(input_csv_path, mode='r', encoding='utf-8') as csv_file:
-            # Skip the first 7 lines
-            for _ in range(7):
+            for _ in range(7):  # Skip header lines if necessary
                 next(csv_file)
             reader = csv.DictReader(csv_file)
+
+            processed_data = []
             for row in reader:
-                data.append(row)
+                processed_row = {}
+                for csv_key, json_key in key_mapping.items():
+                    # Attempt to find the corresponding CSV key for each JSON key
+                    csv_key_found = next((k for k in row.keys() if clean_string(csv_key) in clean_string(k)), None)
+                    if csv_key_found:
+                        processed_row[json_key] = clean_string(row[csv_key_found])
+                    else:
+                        # Ensure all keys are present, even if they're empty
+                        processed_row[json_key] = ""
 
-        # Process the data to remove the last column from each row if it's an empty string
-        for row in data:
-            # Check if the last column value is an empty string and remove it if so
-            if row and (list(row.values())[-1] == ''):
-                row = dict(list(row.items())[:-1])
-            processed_data.append(row)
+                # Ensure a 'notes' key exists for each entry
+                processed_row.setdefault("notes", "")
 
-        # Convert processed data to JSON
+                processed_data.append(processed_row)
+
         with open(output_json_path, mode='w', encoding='utf-8') as json_file:
             json.dump(processed_data, json_file, indent=4)
-            
+
         print(f"Successfully converted and saved to {output_json_path}")
-        
     except Exception as e:
         print(f"Error during conversion: {e}")

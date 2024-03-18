@@ -5,7 +5,7 @@ from lib.cli.utils.meta import clear_screen
 class PackageManager:
     def __init__(self, cli_manager, ds_package):
         self.cli_manager = cli_manager
-        self.ds_package = ds_package
+        # self.ds_package = ds_package
 
     def show_package_menu(self):
         clear_screen()
@@ -33,15 +33,15 @@ class PackageManager:
                 print("Invalid choice. Please try again.")
                 input("\nEnter your choice: ")
 
-    def view_package_details(self, package_id):
-        package = self.ds_package.get_package_details(package_id)
-        if package:
-            print(f"Details for package {package_id}: {package}")
-        else:
-            print("Package not found.")
+    # def view_package_details(self, package_id):
+    #     package = self.ds_package.get_package_details(package_id)
+    #     if package:
+    #         print(f"Details for package {package_id}: {package}")
+    #     else:
+    #         print("Package not found.")
 
-    def view_all_packages(self):
-        # Assuming DSPackage or HashTable class has a method to iterate all packages
-        for package_id in self.ds_package.packages.keys():
-            package = self.ds_package.get_package_details(package_id)
-            print(f"Package {package_id}: {package}")
+    # def view_all_packages(self):
+    #     # Assuming DSPackage or HashTable class has a method to iterate all packages
+    #     for package_id in self.ds_package.packages.keys():
+    #         package = self.ds_package.get_package_details(package_id)
+    #         print(f"Package {package_id}: {package}")
