@@ -1,6 +1,6 @@
 # C950 NHP3 Task 2
 
-This repository contains the implementation and tests for the C950 NHP3 Task 2. It includes various data structures and algorithms, particularly focusing on hashing algorithms like `xxHash` and data structures such as hash tables.
+This repository contains the implementation and tests for the C950 NHP3 Task 2. It includes various data structures and algorithms,such as hashing algorithms like `xxHash` and custom data structures such as the `muxmux hash table`.
 
 ## Structure
 

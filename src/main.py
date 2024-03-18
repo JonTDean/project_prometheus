@@ -4,38 +4,13 @@
 import sys
 from pathlib import Path
 import argparse
-import unittest
+## Fix for relative imports
 project_root = Path(__file__).parent.resolve()
 sys.path.append(str(project_root))
+
 # Local
+from utils.custom_tester import run_tests
 from lib.cli.cli_manager import CLIManager
-
-
-class CustomTestResult(unittest.TextTestResult):
-    def addSuccess(self, test):
-        super().addSuccess(test)
-        # You can modify this message to include whatever information you find useful.
-        self.stream.writeln(f"SUCCESS: {test._testMethodName} - {test.shortDescription()}\n")
-
-class CustomTestRunner(unittest.TextTestRunner):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, resultclass=CustomTestResult, **kwargs)
-
-def run_tests(test_dirs=None):
-    loader = unittest.TestLoader()
-    suite = unittest.TestSuite()
-
-    if test_dirs:
-        for dir in test_dirs:
-            dir_path = project_root / 'tests' / dir
-            discovered = loader.discover(start_dir=str(dir_path), pattern='test_*.py')
-            suite.addTests(discovered)
-    else:
-        suite = loader.discover(start_dir=str(project_root / 'tests'), pattern='test_*.py')
-
-    # Use CustomTestRunner instead of the default runner.
-    runner = CustomTestRunner(verbosity=2)
-    runner.run(suite)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='CLI tool for WGUPS package delivery system.')
@@ -45,7 +20,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.test:
-        run_tests(args.dirs)
+        # Corrected to pass project_root
+        run_tests(project_root, args.dirs)
     else:
         cli_manager = CLIManager()
         cli_manager.run()
