@@ -120,9 +120,13 @@ class XXHash_32:
         return hash_val
 
     @staticmethod
-    def avalanche_effect(hash_val: int, total_len: int) -> int:
+    def avalanche_effect(hash_val: int) -> int:
         """
         Finalizes the hash calculation, applying an avalanche effect.
+        
+        Complexity:
+        - Time: O(1), constant time complexity as operations do not depend on input size.
+        - Space: O(1), constant space complexity.
         """
         hash_val ^= hash_val >> 15
         hash_val *= XXHash_32.PRIME32_2 & 0xFFFFFFFF

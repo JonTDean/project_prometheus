@@ -62,18 +62,42 @@ class MuxMuxHashTable:
                     return prime
             limit *= 2
 
-    def _hash_function(self, key):
+    def _rotate_left(self, value, count, width=32):
         """
-        Computes and returns the hash value of a given key using an algorithm.
+        Performs a left rotation on a value by a specified count, considering a fixed bit width.
 
         Parameters:
-        - key: The key to be hashed. Can be of any hashable type.
+        - value: The integer value to rotate.
+        - count: The number of positions to rotate the value to the left.
+        - width: The bit width to consider for the rotation. Default is 32 for a 32-bit hash.
 
         Returns:
-        - int: The computed hash value modulo the current table size,
-               ensuring it maps to a valid bucket index.
+        - The result of the rotation.
         """
-        return XXHash_32.hash(key, seed=42) % self.size
+        return ((value << count) | (value >> (width - count))) & ((1 << width) - 1)
+
+    def _hash_function(self, key):
+        """
+        Wrapper method for computing the final hash value using double hashing with Bitwise XOR and Rotational Mixing.
+
+        Parameters:
+        - key: The key to be hashed.
+
+        Returns:
+        - int: The final hash value modulo the current table size.
+        """
+        primary_hash = Murmur3_32.hash(key, seed=42)
+        secondary_hash = XXHash_32.hash(key, seed=42)
+
+        
+        # Apply rotational mixing to the secondary hash before XOR
+        rotated_secondary = self._rotate_left(secondary_hash, 5)  # Rotate by 5 positions as an example
+        
+        # Combine hashes using bitwise XOR
+        final_hash = primary_hash ^ rotated_secondary
+        
+        # Ensure the final hash maps to a valid bucket index
+        return final_hash % self.size
         
     def load_factor(self):
         """
