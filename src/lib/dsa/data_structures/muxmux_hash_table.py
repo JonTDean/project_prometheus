@@ -37,7 +37,9 @@ class MuxMuxHashTable:
         self.count = 0  # Tracks the number of key-value pairs in the hash table.
         self.size = self._next_prime(min_size)
         self.table = [None for _ in range(self.size)]
-        
+    
+    #! PUT THIS IN THE SIEVE OF ATKINS CLASS AFTER CONVERTING IT TO A CLASS 
+    #! THEN CAL BACK FROM HERE. MAKE SURE THE SoA IS A STATIC CLASS
     @staticmethod
     def _next_prime(n):
         """
@@ -61,7 +63,7 @@ class MuxMuxHashTable:
 
     def _hash_function(self, key):
         """
-        Computes and returns the hash value of a given key using the Murmur3 algorithm.
+        Computes and returns the hash value of a given key using an algorithm.
 
         Parameters:
         - key: The key to be hashed. Can be of any hashable type.
@@ -164,6 +166,7 @@ class MuxMuxHashTable:
                 return
         else:
             bucket.append((key, value))
+            
     def lookup(self, key):
         """
         Searches for and returns the value associated with a given key 
