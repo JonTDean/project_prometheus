@@ -101,11 +101,14 @@ class MurMurAtkinsHashTable:
         old_table = self.table
         self.size = self._next_prime(new_size)
         self.table = [None for _ in range(self.size)]
-        self.count = 0
+        old_count = self.count  # Preserve the old count
+        self.count = 0  # Reset count to 0, as insert increments it
         for item in old_table:
             if item is not None:
                 for key, value in item:
-                    self.insert(key, value)
+                    # Directly insert without resizing.
+                    self._insert_direct(key, value)
+        self.count = old_count  # Restore the actual item count
 
     def _resize_and_rehash(self):
         """
@@ -145,7 +148,24 @@ class MurMurAtkinsHashTable:
             self.count += 1
         
         self._resize_and_rehash()
+        
 
+
+    def _insert_direct(self, key, value):
+        """
+        Insert directly without triggering resize.
+        Used internally during resize operation to avoid recursion.
+        """
+        hash_key = self._hash_function(key)
+        if self.table[hash_key] is None:
+            self.table[hash_key] = []
+        bucket = self.table[hash_key]
+        for i, kv in enumerate(bucket):
+            if kv[0] == key:
+                bucket[i] = (key, value)
+                return
+        else:
+            bucket.append((key, value))
     def lookup(self, key):
         """
         Searches for and returns the value associated with a given key 
