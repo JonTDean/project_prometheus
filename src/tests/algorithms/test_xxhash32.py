@@ -1,6 +1,6 @@
 # Local
 from src.tests.BaseTest import BaseTest
-from src.lib.dsa.algorithms.xxHash import XXHash_32
+from src.lib.dsa.algorithms.hashing.xxHash import XXHash_32
 
 class TestXXHash32(BaseTest):
     """

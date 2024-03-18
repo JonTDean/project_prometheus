@@ -1,6 +1,6 @@
-from lib.dsa.algorithms.sieve_of_atkin import SieveOfAtkin
-from lib.dsa.algorithms.murmur_3 import Murmur3_32
-from lib.dsa.algorithms.xxHash import XXHash_32
+from lib.dsa.algorithms.primes.sieve_of_atkin import SieveOfAtkin
+from lib.dsa.algorithms.hashing.murmur_3 import Murmur3_32
+from lib.dsa.algorithms.hashing.xxHash import XXHash_32
 
 
 class MuxMuxHashTable:
@@ -12,7 +12,7 @@ class MuxMuxHashTable:
         than the specified minimum size via the `Sieve of Atkin`. This prime number
         sizing aims to reduce collision and improve hash distribution uniformity. 
         
-        By using the hashing algorithm and dynamic table resizing based on the Sieve of Atkin 
+        By using the double hashing addressing and dynamic table resizing based on the Sieve of Atkin 
         for prime number calculation, we are efficiently performing hash distribution and 
         minimizing collision likelihood, enhancing overall data storage and retrieval efficiency.
   

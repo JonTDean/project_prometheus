@@ -1,6 +1,6 @@
 # Local
 from src.tests.BaseTest import BaseTest
-from src.lib.dsa.algorithms.murmur_3 import Murmur3_32
+from src.lib.dsa.algorithms.hashing.murmur_3 import Murmur3_32
 
 class TestMurmur3_32(BaseTest):
     """
