@@ -1,9 +1,6 @@
 ## xxHash Development and Integration for MuxMuxHashTable
 
 ### To Do
-- [ ] **Adapt xxHash for Enhanced ACO Heuristic Information Performance**:
-      Tailor the xxHash algorithm to better suit the dynamic and complex nature of ACO heuristic data, aiming for minimal computational overhead and maximized retrieval speed.
-
 - [ ] **Empirical Collision Rate Analysis with Murmur3 in Double Hashing**:
       Systematically quantify and analyze collision rates when xxHash is paired with Murmur3 within our double hashing framework, aiming to fine-tune parameters for collision mitigation.
 
@@ -22,10 +19,8 @@
 ---
 
 ### In Progress
-- [ ] **Debug and Logging**:
-	  Implement debugging and logging mechanisms to monitor Murmur3's performance and identify any potential issues or inefficiencies.
-
-
+- [ ] **Adapt xxHash for Enhanced ACO Heuristic Information Performance**:
+      Tailor the xxHash algorithm to better suit the dynamic and complex nature of ACO heuristic data, aiming for minimal computational overhead and maximized retrieval speed.
 
 ---
 
@@ -44,3 +39,6 @@
 		- Excellent distribution properties 
 
 	- **Asymptotic Runtime and Efficiency**: The integration of xxHash, in conjunction with Murmur3, allows our double hashing technique to achieve **O(1)** average-case runtime for key operations, significantly enhancing the MuxMuxHashTable's efficiency in handling ACO heuristic information.
+
+- [x] **Debug and Logging**:
+	  Implement debugging and logging mechanisms to monitor Murmur3's performance and identify any potential issues or inefficiencies.

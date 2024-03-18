@@ -1,8 +1,8 @@
 ## Murmur3 Development and Integration for ACO Heuristic Information
 
 ### To Do
-- [ ] **Optimize Murmur3 for Specific ACO Heuristic Information Types**: 
-      Tailor the Murmur3 algorithm to efficiently handle the varied and complex data structures associated with ACO heuristic information, aiming for minimal latency and optimal space utilization.
+
+
 - [ ] **Uniformity and Distribution Analysis in ACO Context**: 
       Conduct a rigorous evaluation of Murmur3's hash distribution and uniformity, specifically in the ACO heuristic information's dynamic environment, to identify any potential biases or inefficiencies in hash distribution.
 
@@ -12,9 +12,9 @@
 ---
 
 ### In Progress
-- [ ] **Debug and Logging**:
-	  Implement debugging and logging mechanisms to monitor Murmur3's performance and identify any potential issues or inefficiencies.
 
+- [ ] **Optimize Murmur3 for Specific ACO Heuristic Information Types**: 
+      Tailor the Murmur3 algorithm to efficiently handle the varied and complex data structures associated with ACO heuristic information, aiming for minimal latency and optimal space utilization.
 
 ---
 
@@ -35,3 +35,6 @@
 
 
       - **Asymptotic Runtime and Efficiency**: The incorporation of Murmur3, coupled with xxHash, supports a double hashing mechanism aiming for **O(1)** average-case time complexity for essential operations, significantly boosting the MuxMuxHashTable's performance in managing ACO heuristic information.
+
+- [x] **Debug and Logging**:
+	  Implement debugging and logging mechanisms to monitor Murmur3's performance and identify any potential issues or inefficiencies.
