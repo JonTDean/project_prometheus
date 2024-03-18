@@ -1,5 +1,6 @@
 from lib.dsa.algorithms.sieve_of_atkin import sieve_of_atkin
 from lib.dsa.algorithms.murmur_3 import Murmur3_32
+from lib.dsa.algorithms.xxHash import XXHash_32
 
 
 class MuxMuxHashTable:
@@ -72,7 +73,7 @@ class MuxMuxHashTable:
         - int: The computed hash value modulo the current table size,
                ensuring it maps to a valid bucket index.
         """
-        return Murmur3_32.hash(key, seed=42) % self.size
+        return XXHash_32.hash(key, seed=42) % self.size
         
     def load_factor(self):
         """

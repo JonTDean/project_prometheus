@@ -22,17 +22,16 @@ class XXHash_32:
     """
     
     
-    """
-        Note: What if I used the sieve of atkins to generate the prime number constants?
-        Something like 
-        ```pseudo
-            array = []
-   
-            for (i = 0; i < 5; i++):
-                if sieve_of_atkins(random_number in range(1, 65536)):
-                    array.push(prime)
-        ```
-    """
+    #!
+    #!    Note: What if I used the sieve of atkins to generate the prime number constants?
+    #!    Something like 
+    #!    ```pseudo
+    #!        array = []
+    #!        for (i = 0; i < 5; i++):
+    #!            if sieve_of_atkins(random_number in range(1, 65536)):
+    #!               array.push(prime)
+    #!    ```
+    
     PRIME32_1 = 0x9E3779B1
     PRIME32_2 = 0x85EBCA77
     PRIME32_3 = 0xC2B2AE3D
@@ -41,14 +40,32 @@ class XXHash_32:
 
 
     @staticmethod
-    def prepare_key(input_bytes: bytes, seed: int) -> int:
+    def prepare_key(key: Union[str, int, bytes]) -> bytes:
         """
-        Initializes the hash value based on the seed and input length.
-        
-        The initial hash value is computed as: H_0 = seed + PRIME32_5 + len(input_bytes),
-        where len(input_bytes) is the total length of the input in bytes.
+        Prepares the key for hashing by converting it into a byte sequence.
+
+        This method ensures that the key, regardless of its original type,
+        is converted into a uniform byte sequence suitable for hashing.
+
+        Parameters:
+        - key (Union[str, int, bytes]): The original key to be hashed, which can be of type str, int, or bytes.
+
+        Returns:
+        - bytes: The key converted into a byte sequence suitable for hashing.
+
+        Raises:
+        - TypeError: If the key type is not str, int, or bytes.
         """
-        return seed + XXHash_32.PRIME32_5 + len(input_bytes)
+        if isinstance(key, str):
+            return key.encode('utf-8')
+        elif isinstance(key, int):
+            # Converts the integer to bytes (little endian);
+            # uses the minimum number of bytes needed to represent the integer.
+            return key.to_bytes((key.bit_length() + 7) // 8, byteorder='little', signed=False)
+        elif isinstance(key, bytes):
+            return key
+        else:
+            raise TypeError("Key must be of type str, int, or bytes.")
 
     @staticmethod
     def process_chunks(input_bytes: bytes, initial_hash: int) -> int:
@@ -115,17 +132,17 @@ class XXHash_32:
         return hash_val
 
     @staticmethod
-    def hash(input_bytes: bytes, seed: int = 0) -> int:
+    def hash(key: Union[str, int, bytes], seed: int = 0) -> int:
         """
         Calculates the xxHash32 hash of the input bytes using the provided seed.
 
-        This is a wrapper method that orchestrates the hashing process by preparing the key,
-        processing chunks, handling any remaining bytes, and finalizing the hash calculation
+        Oorchestrates the hashing process by preparing the key, processing chunks, 
+        handling any remaining bytes, and finalizing the hash calculation
         with the avalanche effect.
 
 
         Parameters:
-        - input_bytes (bytes): The data to hash.
+        - key (Union[str, int, bytes]): The key to hash, which can be of type str, int, or bytes.
         - seed (int): An initial value to influence the hash result, defaulting to 0.
 
         Returns:
@@ -136,8 +153,13 @@ class XXHash_32:
                 processing of all 16-byte chunks, handling remaining bytes, and finalization steps.
         - Space: O(1), operates within constant space.
         """
-        hash_val = XXHash_32.prepare_key(input_bytes, seed)
+        input_bytes = XXHash_32.prepare_key(key)
+        # The initial hash value is computed as: H_0 = seed + PRIME32_5 + len(input_bytes),
+        # where len(input_bytes) is the total length of the input in bytes.
+        hash_val = seed + XXHash_32.PRIME32_5 + len(input_bytes) 
         hash_val, index = XXHash_32.process_chunks(input_bytes, hash_val)
         hash_val = XXHash_32.process_remaining(input_bytes, hash_val, index)
-        hash_val = XXHash_32.avalanche_effect(hash_val)  # Updated call without `total_len`
+        hash_val = XXHash_32.avalanche_effect(hash_val)
         return hash_val & 0xFFFFFFFF
+    
+    
