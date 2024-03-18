@@ -2,13 +2,13 @@
 import json
 import unittest
 # Local
-from lib.dsa.data_structures.murmur_atkins_hash_table import MurMurAtkinsHashTable
+from lib.dsa.data_structures.muxmux_hash_table import MuxMuxHashTable
 from utils.load_package_from_json import load_packages_from_json
 
 def test_hash_table_with_json_data(json_file_path):
     packages = load_packages_from_json(json_file_path)  # Load the JSON data into a list of dictionaries
 
-    hash_table = MurMurAtkinsHashTable(min_size=10)  # Adjust min_size as per your requirements
+    hash_table = MuxMuxHashTable(min_size=10)  # Adjust min_size as per your requirements
 
     # Insert each package into the hash table using its "id" as the key
     for package in packages:

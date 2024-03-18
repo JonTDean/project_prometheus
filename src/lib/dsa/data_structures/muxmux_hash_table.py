@@ -2,7 +2,7 @@ from lib.dsa.algorithms.sieve_of_atkin import sieve_of_atkin
 from lib.dsa.algorithms.murmur_3 import Murmur3
 
 
-class MurMurAtkinsHashTable:
+class MuxMuxHashTable:
     def __init__(self, min_size, max_load_factor=0.7, min_load_factor=0.2):
         """
         Initializes a hash table with dynamic resizing based on [max, min] load factor.
@@ -14,7 +14,7 @@ class MurMurAtkinsHashTable:
         By using the hashing algorithm and dynamic table resizing based on the Sieve of Atkin 
         for prime number calculation, we are efficiently performing hash distribution and 
         minimizing collision likelihood, enhancing overall data storage and retrieval efficiency.
-
+  
         Parameters:
         - min_size (int): Sets the minimum initial capacity of the hash table, which is then adjusted
           to the next prime number to ensure optimal hash distribution.

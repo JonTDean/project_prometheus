@@ -1,14 +1,14 @@
 # Stdlib
 import json
 # Local
-from lib.dsa.data_structures.murmur_atkins_hash_table import MurMurAtkinsHashTable
+from lib.dsa.data_structures.muxmux_hash_table import MuxMuxHashTable
 from utils.load_package_from_json import load_packages_from_json
 
 class DSPackage:
     def __init__(self, json_file_path):
         # Initialize Hash Table
         packages = load_packages_from_json("/home/jon/programming/WGU/c950/data/package_file.json")
-        # hash_table = MurMurAtkinsHashTable(size=40)  # Adjust size as needed
+        # hash_table = MuxMuxHashTable(size=40)  # Adjust size as needed
         # self._populate_from_json(json_file_path)
     
     # def _populate_from_json(self, file_path):

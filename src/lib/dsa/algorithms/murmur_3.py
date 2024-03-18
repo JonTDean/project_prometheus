@@ -7,7 +7,8 @@ class Murmur3:
     Static class implementation of the Murmur3 hashing algorithm, known for its
     efficiency for integers, i.e. PackageID.
     (https://www.synnada.ai/glossary/murmurhash)
-
+	(https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp)
+    
     Attributes:
     - Constants (c1, c2, r1, r2, m, n): Predefined values used in the hash computation, as per
       the MurmurHash3 specification.
