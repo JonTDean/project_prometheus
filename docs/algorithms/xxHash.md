@@ -9,6 +9,13 @@
 
 - [ ] **Prime Constants and Seed Values for xxHash**:
 	  Use the `Sieve of Atkin` algorithm to generate prime constants and seed values for xxHash.
+
+	```python
+    prime_array = []
+    for (i = 0; i < 5; i++):
+    if sieve_of_atkins(random_number in range(1, 65536)):
+    prime_array.push(prime)
+    ```
 	  
 - [ ] **Fine-tune xxHash Parameters for the ACO Implementation Context**:
       Undertake a thorough examination and experimentation with xxHash's prime constants and seed values to fine-tune its hashing distribution, particularly in the context of the ACO heuristic information, ensuring an optimal balance between speed and distribution.

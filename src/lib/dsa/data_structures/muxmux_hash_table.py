@@ -1,4 +1,4 @@
-from lib.dsa.algorithms.sieve_of_atkin import sieve_of_atkin
+from lib.dsa.algorithms.sieve_of_atkin import SieveOfAtkin, sieve_of_atkin
 from lib.dsa.algorithms.murmur_3 import Murmur3_32
 from lib.dsa.algorithms.xxHash import XXHash_32
 
@@ -36,31 +36,9 @@ class MuxMuxHashTable:
         self.max_load_factor = max_load_factor
         self.min_load_factor = min_load_factor
         self.count = 0  # Tracks the number of key-value pairs in the hash table.
-        self.size = self._next_prime(min_size)
+        self.size = SieveOfAtkin.next_prime(min_size)
         self.table = [None for _ in range(self.size)]
     
-    #! PUT THIS IN THE SIEVE OF ATKINS CLASS AFTER CONVERTING IT TO A CLASS 
-    #! THEN CAL BACK FROM HERE. MAKE SURE THE SoA IS A STATIC CLASS
-    @staticmethod
-    def _next_prime(n):
-        """
-        Utilizes the Sieve of Atkin to find and return the next
-        prime number greater than a given integer, f(N) = Prime > N,
-        in this case the size of our ingested package_file.json.
-        
-        Parameters:
-        - n (int): The integer from which to find the next prime number.
-
-        Returns:
-        - int: The next prime number greater than 'n'.
-        """
-        limit = n + 10
-        while True:
-            primes = sieve_of_atkin(limit)
-            for prime in primes:
-                if prime > n:
-                    return prime
-            limit *= 2
 
     def _rotate_left(self, value, count, width=32):
         """
@@ -126,7 +104,7 @@ class MuxMuxHashTable:
                           which will be adjusted to the next prime number.
         """
         old_table = self.table
-        self.size = self._next_prime(new_size)
+        self.size = SieveOfAtkin.next_prime(new_size)
         self.table = [None for _ in range(self.size)]
         old_count = self.count  # Preserve the old count
         self.count = 0  # Reset count to 0, as insert increments it
