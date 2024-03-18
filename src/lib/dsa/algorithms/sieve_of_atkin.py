@@ -1,7 +1,9 @@
 def sieve_of_atkin(limit):
     """
     Sieve of Atkin implementation to find all prime numbers up to the limit.
-    (https://cr.yp.to/papers/primesieves.pdf)
+    
+    Translated From: 
+    - https://cr.yp.to/papers/primesieves.pdf
     """
     P = [2, 3]
     sieve = [False] * (limit + 1)

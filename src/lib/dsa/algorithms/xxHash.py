@@ -1,18 +1,22 @@
 import struct
 from typing import Union
 
-# xxHash seems to be good to use for a complementary algorithm for the MurmurHash3 algorithm.
-# We're only going to target the 32bit version of xxHash, as it's the most relevant to our use case.
-# https://github.com/Cyan4973/xxHash/blob/dev/doc/xxhash.cry
-# https://github.com/Cyan4973/xxHash/blob/dev/doc/xxhash_spec.md
+"""
+xxHash seems to be good to use for a complementary algorithm for the MurmurHash3 algorithm.
+We're only going to target the 32bit version of xxHash, as it's the most relevant to our use case.
 
+Translated From:
+- https://github.com/Cyan4973/xxHash/blob/dev/doc/xxhash.cry
+- https://github.com/Cyan4973/xxHash/blob/dev/doc/xxhash_spec.md
+"""
 
-class XXHash32:
+class XXHash_32:
     """
     Implements the 32-bit version of the xxHash algorithm. xxHash is a fast non-cryptographic
     hash algorithm, working at speeds close to RAM limits. Designed for use in hash tables, 
     xxHash provides a highly distributed hash value for varied inputs, making it suitable for
     high-performance applications that require efficient data retrieval mechanisms.
+
 
     Attributes:
     - PRIME32_1 to PRIME32_5: Prime number constants defined by the xxHash specification.
@@ -23,6 +27,17 @@ class XXHash32:
     PRIME32_3 = 0xC2B2AE3D
     PRIME32_4 = 0x27D4EB2F
     PRIME32_5 = 0x165667B1
+    """
+    	Note: What if I used the sieve of atkins to generate the prime number constants?
+		Something like 
+		```pseudo
+			array = []
+   
+			for (i = 0; i < 5; i++):
+				if sieve_of_atkins(random_number in range(1, 65536)):
+					array.push(prime)
+		```
+    """
 
     def __init__(self, seed: int = 0):
         """

@@ -2,12 +2,14 @@ import struct
 from typing import Generator, Union
 import struct
 
-class Murmur3:
+class Murmur3_32:
     """
     Static class implementation of the Murmur3 hashing algorithm, known for its
     efficiency for integers, i.e. PackageID.
     (https://www.synnada.ai/glossary/murmurhash)
-	(https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp)
+    
+	Translated From:
+ 	- https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
     
     Attributes:
     - Constants (c1, c2, r1, r2, m, n): Predefined values used in the hash computation, as per
@@ -89,9 +91,9 @@ class Murmur3:
             # These steps help with	dispersing the input key's patterns
             # across the hash space, contributing to the algorithm's "avalanche" effect.
             # https://www.geeksforgeeks.org/avalanche-effect-in-cryptography/
-            k *= Murmur3.c1
-            k = ((k << Murmur3.r1) | (k >> (32 - Murmur3.r1))) & 0xFFFFFFFF
-            k *= Murmur3.c2
+            k *= Murmur3_32.c1
+            k = ((k << Murmur3_32.r1) | (k >> (32 - Murmur3_32.r1))) & 0xFFFFFFFF
+            k *= Murmur3_32.c2
             yield k
             
     @staticmethod
@@ -113,15 +115,15 @@ class Murmur3:
         Returns:
         - int: A 32-bit hash of the key.
         """
-        key = Murmur3.prepare_key(key)
+        key = Murmur3_32.prepare_key(key)
         hash_val = seed
 
-        for chunk in Murmur3.process_key_chunks(key):
+        for chunk in Murmur3_32.process_key_chunks(key):
             hash_val ^= chunk
-            hash_val = ((hash_val << Murmur3.r2) | (hash_val >> (32 - Murmur3.r2))) & 0xFFFFFFFF
-            hash_val = (hash_val * Murmur3.m + Murmur3.n) & 0xFFFFFFFF
+            hash_val = ((hash_val << Murmur3_32.r2) | (hash_val >> (32 - Murmur3_32.r2))) & 0xFFFFFFFF
+            hash_val = (hash_val * Murmur3_32.m + Murmur3_32.n) & 0xFFFFFFFF
 
-        return Murmur3.avalanche_effect(hash_val, key)
+        return Murmur3_32.avalanche_effect(hash_val, key)
 
     @staticmethod
     def avalanche_effect(hash_val: int, key: bytes) -> int:
