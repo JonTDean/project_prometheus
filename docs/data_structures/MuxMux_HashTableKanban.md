@@ -1,18 +1,13 @@
 ## LocalHashTable for ACO Implementation
 
 ### To Do
-- [ ] Design and implement dynamic resizing based on load factors to adapt to changing data volumes, maintaining operational efficiency.
-
-- [ ] Consider concurrency and implement thread safety for parallel computations, crucial for leveraging multi-threaded optimizations in ACO heuristic calculations.
-
-- [ ] Optimize for memory efficiency, especially in graph and pheromone matrix storage, to minimize the space complexity and enhance the scalability of ACO implementations.
-
 
 ---
 
 ### In Progress
+- [ ] Consider concurrency and implement thread safety for parallel computations, crucial for leveraging multi-threaded optimizations in ACO heuristic calculations.
 
-- [ ] Implement a `keys` method for iterating over hash table keys, facilitating comprehensive access to heuristic information.
+- [ ] Optimize for memory efficiency, especially in graph and pheromone matrix storage, to minimize the space complexity and enhance the scalability of ACO implementations.
 
 ---
 
@@ -45,3 +40,7 @@
 - [x] Implement insertion function with collision handling, ensuring that new data can be added efficiently even as the table approaches its capacity limit.
 
 - [x] Implement efficient lookup operations using the double hashing technique.
+
+- [x] Implement a `keys` method for iterating over hash table keys, facilitating comprehensive access to heuristic information.
+
+- [x] Design and implement dynamic resizing based on load factors to adapt to changing data volumes, maintaining operational efficiency.

@@ -110,7 +110,8 @@ class XXHash_32:
                 i += 4
                 if debug:
                     print(f"[DEBUG] Updated hash: {hash_val}")
-        print(f"[DEBUG] Final hash value after processing chunks: {hash_val}")
+        if debug:        
+            print(f"[DEBUG] Final hash value after processing chunks: {hash_val}")
         
         return hash_val, i
 
@@ -145,7 +146,8 @@ class XXHash_32:
             if debug:
                 print(f"[DEBUG] Processing byte [{index}], value: {input_bytes[index]}")
                 print(f"[DEBUG] Updated hash: {hash_val}")
-        print(f"[DEBUG] Final hash value after processing remaining bytes: {hash_val}")
+        if debug: 	    
+            print(f"[DEBUG] Final hash value after processing remaining bytes: {hash_val}")
         
         return hash_val
 

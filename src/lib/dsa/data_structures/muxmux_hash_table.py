@@ -4,7 +4,7 @@ from lib.dsa.algorithms.hashing.xxHash import XXHash_32
 
 
 class MuxMuxHashTable:
-    def __init__(self, min_size, max_load_factor=0.7, min_load_factor=0.2):
+    def __init__(self, min_size, max_load_factor=0.7, min_load_factor=0.2, debug=False):
         """
         Initializes a hash table with dynamic resizing based on [max, min] load factor.
 
@@ -24,6 +24,7 @@ class MuxMuxHashTable:
           collisions and access times.
         - min_load_factor (float): The lower bound load factor before the table is resized downwards,
           optimizing memory usage when occupancy is low.
+        - debug (bool): If True, prints debug information during hash table operations.
 
         Attributes:
         - max_load_factor (float): Stores the maximum load factor threshold.
@@ -32,12 +33,14 @@ class MuxMuxHashTable:
         - size (int): The current capacity of the hash table, always set to a prime number.
         - table (list): The underlying data structure, a list of buckets where each bucket is a list
           of key-value pairs or None if no entries are present.
+        - debug (bool): If True, prints debug information during hash table operations.
         """
         self.max_load_factor = max_load_factor
         self.min_load_factor = min_load_factor
         self.count = 0  # Tracks the number of key-value pairs in the hash table.
         self.size = SieveOfAtkin.next_prime(min_size)
         self.table = [None for _ in range(self.size)]
+        self.debug = debug
     
 
     def _rotate_left(self, value, count, width=32):
@@ -64,8 +67,8 @@ class MuxMuxHashTable:
         Returns:
         - int: The final hash value modulo the current table size.
         """
-        primary_hash = Murmur3_32.hash(key, seed=42)
-        secondary_hash = XXHash_32.hash(key, seed=42)
+        primary_hash = Murmur3_32.hash(key, seed=42 , debug=self.debug)
+        secondary_hash = XXHash_32.hash(key, seed=42, debug=self.debug)
 
         
         # Apply rotational mixing to the secondary hash before XOR

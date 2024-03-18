@@ -8,7 +8,7 @@ The project directory is structured as follows:
 
 ```zsh
 .
-----META SECTION
+--------------------META_SECTION
 ├── Readme.md
 ├── data
 │   ├── distance_table.json
@@ -33,8 +33,11 @@ The project directory is structured as follows:
 │   ├── WGUPS_Distance_Table.csv
 │   └── WGUPS_Package_File.csv
 
----- LOGIC SECTION
+--------------------LOGIC_SECTION
 └── src
+
+------------------------------PRIMARY_LOGIC
+
     ├── main.py 
     ├── lib
     │   ├── cli
@@ -54,20 +57,31 @@ The project directory is structured as follows:
     │   │   └── DSTruck.py
     │   └── dsa
     │       ├── algorithms
-    │       │   ├── VRPAlgorithm.py
     │       │   ├── ant_colony_optimization
-    │       │   │   └── ACOAlgorithm.py
-    │       │   ├── murmur_3.py
-    │       │   ├── sieve_of_atkin.py
-    │       │   └── xxHash.py
+    │       │   ├── hashing
+    │       │   │   ├── murmur_3.py
+    │       │   │   └── xxHash.py
+    │       │   └── primes
+    │       │       └── sieve_of_atkin.py
     │       └── data_structures
+    │           ├── 2d_array.py
+    │           ├── adjacency_matrix.py
+    │           ├── fibonnaci_heap.py
+    │           ├── linked_list.py
+    │           ├── min_heap.py
     │           └── muxmux_hash_table.py
+
+------------------------------TEST_LOGIC
+
     ├── tests
+    │   ├── BaseTest.py
     │   ├── algorithms
+    │   │   ├── test_murmur3.py
     │   │   └── test_xxhash32.py
     │   └── data_structures
     │       └── test_hash_table.py
     └── utils
+        ├── custom_tester.py
         └── load_package_from_json.py
 ```
 

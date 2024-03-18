@@ -40,23 +40,23 @@
 
 ### Requirements (WGU Course Material, 2023)
 
-- [ ] A - Develop a hash table, without using any additional libraries or classes, that has an insertion function that takes the package ID as input and inserts each of the following data components into the hash table:
+- [x] A - Develop a hash table, without using any additional libraries or classes, that has an insertion function that takes the package ID as input and inserts each of the following data components into the hash table:
 
-	- [ ] delivery address
-	- [ ] delivery deadline
-	- [ ] delivery city
-	- [ ] delivery zip code
-	- [ ] package weight
-	- [ ] delivery status (i.e., at the hub, en route, or delivered), including the delivery time
+	- [x] delivery address
+	- [x] delivery deadline
+	- [x] delivery city
+	- [x] delivery zip code
+	- [x] package weight
+	- [x] delivery status (i.e., at the hub, en route, or delivered), including the delivery time
 
-- [ ] B - Develop a look-up function that takes the package ID as input and returns each of the following corresponding data components:
+- [x] B - Develop a look-up function that takes the package ID as input and returns each of the following corresponding data components:
 
-	- [ ] delivery address
-	- [ ] delivery deadline
-	- [ ] delivery city
-	- [ ] delivery zip code
-	- [ ] package weight
-	- [ ] delivery status (i.e., at the hub, en route, or delivered), including the delivery time
+	- [x] delivery address
+	- [x] delivery deadline
+	- [x] delivery city
+	- [x] delivery zip code
+	- [x] package weight
+	- [x] delivery status (i.e., at the hub, en route, or delivered), including the delivery time
 
 - [x] C - Write an original program that will deliver all packages and meet all requirements using the attached supporting documents “Salt Lake City Downtown Map,” “WGUPS Distance Table,” and “WGUPS Package File.”
 
